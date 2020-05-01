@@ -8,17 +8,33 @@ g = Geod(ellps='WGS84')
 wgs84=CRS("EPSG:4326") # LatLon with WGS84 datum used by GPS units and Google Earth 
 UTM=CRS("EPSG:32721")
 
-
-def create_path(a,b,contour,distancia):
+#Reverse
+#90 course sign change
+#left to right
+# -1 1 change
+def create_path(a,b,contour,distancia,reverse=False,dir=0):
+    conf_1=-90
+    conf_2=1
+    conf_3="left"
+    conf_4=0
+    if dir==1:
+        conf_3="right"
+    if reverse:
+        conf_1=90
+        conf_2=-1
+        conf_3="right"
+        conf_4=1
+        if dir==1:
+            conf_3="left"
     path=[]
     contorno_points=[]
     for c in contour:
-	    yy,xx=transform(wgs84, UTM, c.y, c.x)
+	    xx,yy=transform(wgs84, UTM, c.y, c.x)
 	    utm_pos=Coordinate(x=xx,y=yy)
 	    contorno_points.append(Point(utm_pos.x,utm_pos.y))
-    y,x=transform(wgs84, UTM, a.y, a.x)
+    x,y=transform(wgs84, UTM, a.y, a.x)
     a_utm=Point(x,y)
-    y,x=transform(wgs84, UTM, coords.b.y, coords.b.x)
+    x,y=transform(wgs84, UTM, coords.b.y, coords.b.x)
     b_utm=Point(x,y)
     a2,b2=utils.extend(a_utm,b_utm)
     ab_course=utils.bearing(a_utm,b_utm)
@@ -28,28 +44,28 @@ def create_path(a,b,contour,distancia):
     line=AB.intersection(eroded)
     for c in line.coords:
         path.append(Point(c))
-    centro=utils.offset(utils.toCoord(line.coords[1]),ab_course+90,distancia/2)
+    centro=utils.offset(utils.toCoord(line.coords[conf_4]),ab_course+conf_1,distancia/2)
     radius = distancia/2
     start_angle, end_angle = 90-ab_course+90, 90-ab_course-90 # In degrees
     numsegments = 200
     theta = np.radians(np.linspace(start_angle, end_angle, numsegments))
-    x = centro.x + (radius * np.cos(theta))
-    y = centro.y + (radius * np.sin(theta))
+    x = centro.x + (radius * np.cos(theta))*-1
+    y = centro.y + (radius * np.sin(theta))*-1
     arc = LineString(np.column_stack([x, y]))
     for c in arc.coords:
             path.append(Point(c))
 
     for x in range(1, 30):
-        ab_1=AB.parallel_offset(x*distancia, "right")
+        ab_1=AB.parallel_offset(x*distancia, conf_3)
         line=ab_1.intersection(eroded)
         if(line.geom_type=="LineString"):
             if(len(line.coords)>1):
                 p1=1
-                p2=-1
+                p2=conf_2
                 if x%2==0:
                     p1=0
-                    p2=1
-                centro=utils.offset(utils.toCoord(line.coords[p1]),ab_course+90,distancia/2)
+                    p2=-conf_2
+                centro=utils.offset(utils.toCoord(line.coords[p1]),ab_course+conf_1,distancia/2)
                 radius = distancia/2
                 start_angle, end_angle = 90-ab_course-90, 90-ab_course+90 # In degrees
                 if x%2==0:
@@ -63,8 +79,8 @@ def create_path(a,b,contour,distancia):
                         path.append(Point(c))
     final=LineString(path)
     path2=[]
-    for x in range(0, int(final.length/5)):
-        p=final.interpolate(x*5)
+    for x in range(0, int(final.length/2)):
+        p=final.interpolate(x*2)
         path2.append(p)
     return path2
 
@@ -79,8 +95,8 @@ def get_target(gps, path):
             p_min=p
     nearest_A=p_min
     nearest_B=p_min
-    if path.index(p_min)<len(path)-1:
-        nearest_B=path[path.index(p_min)+1]
+    if path.index(p_min)<len(path)-2:
+        nearest_B=path[path.index(p_min)+2]
     curso=utils.bearing(nearest_A,nearest_B)
     return nearest_B, d, curso
 
