@@ -49,8 +49,8 @@ def create_path(a,b,contour,distancia,reverse=False,dir=0):
     start_angle, end_angle = 90-ab_course+90, 90-ab_course-90 # In degrees
     numsegments = 200
     theta = np.radians(np.linspace(start_angle, end_angle, numsegments))
-    x = centro.x + (radius * np.cos(theta))*-1
-    y = centro.y + (radius * np.sin(theta))*-1
+    x = centro.x + (radius * np.cos(theta))*conf_2*-1
+    y = centro.y + (radius * np.sin(theta))*conf_2*-1
     arc = LineString(np.column_stack([x, y]))
     for c in arc.coords:
             path.append(Point(c))

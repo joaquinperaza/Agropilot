@@ -11,9 +11,9 @@ class Tractor:
     location=Coordinate(x=0,y=0)
     bearing=0
     m_p_s=0
-    pid = PID(.7, 0.1, 0.05, setpoint=0)
+    pid = PID(.7, .2, .02, setpoint=0)
     
-    pid.output_limits=(-10, 10)
+    pid.output_limits=(-20, 20)
     direccion=0
     def move(self):
         while True:
@@ -33,6 +33,7 @@ class Tractor:
     def doblar(self,v):
         self.direccion=self.pid(v)
         print("PID: ",self.direccion)
+
 
     def juego_en_la_direccion(self):
         self.bearing+=randrange(-10,10)
