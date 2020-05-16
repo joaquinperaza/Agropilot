@@ -67,3 +67,5 @@ wcwidth==0.1.9
 webencodings==0.5.1
 widgetsnbextension==3.5.1
 yarl==1.4.2
+RPi.GPIO==0.7.0
+pymemcache==3.1.1
