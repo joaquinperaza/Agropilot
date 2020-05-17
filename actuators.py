@@ -65,15 +65,17 @@ class ActuadoresAgropilot:
 
 	def runner_child2(self):
 		while True:
-			if int(self.client.get('dir'))!=-1 and int(self.client.get('step'))!=-1:
-				GPIO.output(self.DIR, int(self.client.get('dir')))
-				for x in range(int(self.client.get('step'))):
-					GPIO.output(self.STEP, GPIO.HIGH)
-					sleep(self.delay)
-					GPIO.output(self.STEP, GPIO.LOW)
-					sleep(self.delay)
-				self.client.add('dir',"-1")
-				self.client.add('step',"-1")
+			try:
+				if int(self.client.get('dir'))!=-1 and int(self.client.get('step'))!=-1:
+					GPIO.output(self.DIR, int(self.client.get('dir')))
+					for x in range(int(self.client.get('step'))):
+						GPIO.output(self.STEP, GPIO.HIGH)
+						sleep(self.delay)
+						GPIO.output(self.STEP, GPIO.LOW)
+						sleep(self.delay)
+					self.client.add('dir',"-1")
+					self.client.add('step',"-1")
+			except Exception as e:
+				print ("Motor ERR",repr(e))
 
-		
 
