@@ -70,7 +70,6 @@ class ActuadoresAgropilot:
 		while True:
 			try:
 				if int(self.client.get('dir'))!=-1 and int(self.client.get('step'))!=-1:
-					print("GIRO",int(self.client.get("dir")),int(self.client.get("step")))
 					GPIO.output(self.DIR, int(self.client.get('dir')))
 					delay2=self.idelay
 					for x in range(int(self.client.get('step'))):
@@ -82,7 +81,6 @@ class ActuadoresAgropilot:
 						sleep(delay2/10000000)
 					self.client.set('dir',"-1")
 					self.client.set('step',"-1")
-				sleep(.1)
 			except Exception as e:
 				print ("Motor ERR",repr(e))
 

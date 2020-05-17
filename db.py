@@ -25,10 +25,13 @@ class DB:
 		if int(self.client.get('acel'))!=-1:
 			self.status.document("servos").update({u'acel': int(self.client.get('acel'))})
 		self.status.document("servos").update({u'corte': int(self.client.get('corte'))})
+	
 	def get_mode(self):
 		mode_doc = self.status.document("nav").get().to_dict()
-		print(mode_doc)
-		return mode_doc["mode"]
+		self.client.set('mode',mode_doc["mode"])
+
+	def fast_get_mode(self):
+		return self.client.get('mode')
 
 	def get_ip(self):
 		mode_doc = self.conf.document("net").get().to_dict()
@@ -38,4 +41,5 @@ class DB:
 	def get_test(self):
 		mode_doc = self.status.document("nav").get().to_dict()
 		self.status.document("nav").update({"mode": "stop","step": 0, "dir":0})
+		self.client.set('mode',"stop")
 		return mode_doc["step"], mode_doc["dir"]
