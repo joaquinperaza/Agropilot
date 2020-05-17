@@ -24,19 +24,19 @@ class TCPConnection:
 
     def readlines(self):
         data = self.sock.recv(1024)
-        print(data)
+        print("D",data)
 
 
 class GPSData:
 	def __init__(self):
 		self.net= DB()
 		self.listen = TCPConnection()
-		self.listen.connect(net.get_ip(),8888)
+		self.listen.connect(self.net.get_ip(),8888)
 		self.client = base.Client(('localhost', 11211))
 	def runner_child(self):
 		while True:
 			try:
-				line = listen.readlines()	
+				line = self.listen.readlines()	
 				# if (line.startswith("$GNGGA")):
 				# 	data = pynmea2.parse(line)
 				# 	client.set('lat', data.latitude)

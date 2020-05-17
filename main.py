@@ -9,9 +9,10 @@ control=ActuadoresAgropilot()
 control.setup()
 gps=GPSData()
 gps.run()
-net=DB()
-db.update()
-mode=db.get_mode()
+sleep(5)
+gps.net.update()
+mode=gps.net.get_mode()
+
 
 while True:
 	while mode=="test":
