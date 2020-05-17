@@ -32,6 +32,7 @@ class DB:
 
 	def get_ip(self):
 		mode_doc = self.db.collection(u'conf').document("net").get()
+		print(mode_doc.ip)
 		return mode_doc.ip
 
 	def get_test(self):
