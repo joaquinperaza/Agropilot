@@ -23,8 +23,8 @@ class TCPConnection:
             print('Connection Failed')
 
     def readlines(self):
-        data = self.sock.recv(1024)
-        print("D",data)
+        data = self.sock.recv(1024).decode('utf-8')
+        return data.split("\r\n")
 
 
 class GPSData:
@@ -35,23 +35,23 @@ class GPSData:
 		self.client = base.Client(('localhost', 11211))
 	def runner_child(self):
 		while True:
-			try:
-				line = self.listen.readlines()	
-				# if (line.startswith("$GNGGA")):
-				# 	data = pynmea2.parse(line)
-				# 	client.set('lat', data.latitude)
-				# 	client.set('lon', data.longitude)
-				# 	client.set('sat', data.num_sats)
-				# 	client.set('age', data.age_gps_data)
-				# if (line.startswith("$GNRMC")):
-				# 	data = pynmea2.parse(line)
-				# 	client.set('lat', data.latitude)
-				# 	client.set('lon', data.longitude)
-				# 	client.set('spd', data.spd_over_grnd)
-				# 	client.set('nav', data.true_course)
-			except Exception as e:
-				print('Device error: {}'.format(e))
-				time.sleep(5)
+			if 1==1:
+				lines = self.listen.readlines()
+				for line in lines:
+					if (line.startswith("$GNGGA")):
+						data = pynmea2.parse(line)
+						self.client.set('lat',str(data.latitude))
+						self.client.set('lon', str(data.longitude))
+						self.client.set('sat', str(data.num_sats))
+						self.client.set('age', str(data.age_gps_data))
+
+					if (line.startswith("$GNRMC")):
+						data = pynmea2.parse(line)
+						self.client.set('lat', str(data.latitude))
+						self.client.set('lon', str(data.longitude))
+						self.client.set('spd', str(data.spd_over_grnd))
+						self.client.set('nav', str(data.true_course))
+
 	def run(self):
 		t1 = threading.Thread(target=self.runner_child)
 		t1.start()

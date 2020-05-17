@@ -14,17 +14,17 @@ class DB:
 		self.client = base.Client(('localhost', 11211))
 
 	def update(self):
-		self.status.document("pos").update({u'lat': self.client.get('lat')})
-		self.status.document("pos").update({u'lon': self.client.get('lon')})
-		self.status.document("pos").update({u'sat': self.client.get('sat')})
-		self.status.document("pos").update({u'age': self.client.get('age')})
-		self.status.document("pos").update({u'spd': self.client.get('spd')})
-		self.status.document("pos").update({u'nav': self.client.get('nav')})
-		self.status.document("motor").update({u'dir': self.client.get('dir')})
-		self.status.document("motor").update({u'step': self.client.get('step')})
+		self.status.document("pos").update({u'lat': float(self.client.get('lat'))})
+		self.status.document("pos").update({u'lon': float(self.client.get('lon'))})
+		self.status.document("pos").update({u'sat': float(self.client.get('sat'))})
+		self.status.document("pos").update({u'age': float(self.client.get('age'))})
+		self.status.document("pos").update({u'spd': float(self.client.get('spd'))})
+		self.status.document("pos").update({u'nav': float(self.client.get('nav'))})
+		self.status.document("motor").update({u'dir': int(self.client.get('dir'))})
+		self.status.document("motor").update({u'step': int(self.client.get('step'))})
 		if int(self.client.get('acel'))!=-1:
-			self.status.document("servos").update({u'acel': self.client.get('acelerador')})
-		self.status.document("servos").update({u'corte': self.client.get('corte')})
+			self.status.document("servos").update({u'acel': int(self.client.get('acel'))})
+		self.status.document("servos").update({u'corte': int(self.client.get('corte'))})
 	def get_mode(self):
 		mode_doc = self.status.document("nav").get().to_dict()
 		print(mode_doc)
@@ -37,4 +37,5 @@ class DB:
 
 	def get_test(self):
 		mode_doc = self.status.document("nav").get().to_dict()
+		self.status.document("nav").update({"mode": "stop","step": 0, "dir":0})
 		return mode_doc["step"], mode_doc["dir"]

@@ -12,12 +12,13 @@ class ActuadoresAgropilot:
 		self.fPWM = 50  # Hz (not higher with software PWM)
 		self.a = 10.0
 		self.b = 2.0
-		self.DIR = 24  # Direction GPIO Pin
-		self.STEP = 16  # Step GPIO Pin
+		self.DIR = 18  # Direction GPIO Pin
+		self.STEP = 36  # Step GPIO Pin
 		self.CW = 1     # Clockwise Rotation
 		self.CCW = 0    # Counterclockwise Rotation
 		self.SPR = 1600
-		self.DELAY = .00150
+		self.delay = 50
+		self.idelay = 500
 
 	def setup(self):
 		GPIO.setmode(GPIO.BOARD)
@@ -27,12 +28,14 @@ class ActuadoresAgropilot:
 		GPIO.setup(self.kill, GPIO.OUT)
 		self.kill_pwm = GPIO.PWM(self.kill, self.fPWM)
 		self.kill_pwm.start(0)
-		self.client.add('acel', "0")
-		self.client.add('corte', "0")
-		self.client.add('step',"0")
-		self.client.add('dir', "0")
+		self.client.add('acel', "-1")
+		self.client.add('corte', "-1")
+		self.client.add('step',"-1")
+		self.client.add('dir', "-1")
+		sleep(1)
 		t1 = threading.Thread(target=self.runner_child)
 		t1.start()
+		sleep(1)
 		t2 = threading.Thread(target=self.runner_child2)
 		t2.start()
 		GPIO.setup(self.STEP, GPIO.OUT)
@@ -44,7 +47,6 @@ class ActuadoresAgropilot:
 
 
 	def cut(self):
-		print("debug",int(self.client.get("corte")))
 		if int(self.client.get('corte'))==0:
 			duty = self.a / 180.0 * 0.0 + self.b
 			self.kill_pwm.ChangeDutyCycle(duty)
@@ -60,6 +62,7 @@ class ActuadoresAgropilot:
 				if int(self.client.get('acel')) != -1:
 					self.setAcelerador(int(self.client.get('acel')))
 					self.client.add('acel',"-1")
+				sleep(.1)
 			except Exception as e:
 				print ("Actuator ERR",repr(e))
 
@@ -67,14 +70,19 @@ class ActuadoresAgropilot:
 		while True:
 			try:
 				if int(self.client.get('dir'))!=-1 and int(self.client.get('step'))!=-1:
+					print("GIRO",int(self.client.get("dir")),int(self.client.get("step")))
 					GPIO.output(self.DIR, int(self.client.get('dir')))
+					delay2=self.idelay
 					for x in range(int(self.client.get('step'))):
+						if delay2>self.delay: 
+							delay2-=1
 						GPIO.output(self.STEP, GPIO.HIGH)
-						sleep(self.delay)
+						sleep(delay2/10000000)
 						GPIO.output(self.STEP, GPIO.LOW)
-						sleep(self.delay)
-					self.client.add('dir',"-1")
-					self.client.add('step',"-1")
+						sleep(delay2/10000000)
+					self.client.set('dir',"-1")
+					self.client.set('step',"-1")
+				sleep(.1)
 			except Exception as e:
 				print ("Motor ERR",repr(e))
 
