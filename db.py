@@ -5,11 +5,11 @@ from firebase_admin import firestore
 
 class DB:
 	# Use the application default credentials
-	global cred, db, status, conf
-	firebase_admin.initialize_app()
-	db = firestore.client()
-	status = db.collection(u'status')
-	conf = db.collection(u'conf')
+	def __init__(self):
+		firebase_admin.initialize_app()
+		self.db = firestore.client()
+		self.status = db.collection(u'status')
+		self.conf = db.collection(u'conf')
 	def update(self):
 		self.status.document("pos").update({u'lat': client.get('lat')})
 		self.status.document("pos").update({u'lon': client.get('lon')})

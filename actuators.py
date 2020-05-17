@@ -5,18 +5,19 @@ from time import sleep
 
 
 class ActuadoresAgropilot:
-	client = base.Client(('localhost', 11211))
-	acelerador = 22
-	kill = 23
-	fPWM = 50  # Hz (not higher with software PWM)
-	a = 10
-	b = 2
-	DIR = 20   # Direction GPIO Pin
-	STEP = 21  # Step GPIO Pin
-	CW = 1     # Clockwise Rotation
-	CCW = 0    # Counterclockwise Rotation
-	SPR = 1600
-	DELAY = .00150
+	def __init__(self):
+		self.client = base.Client(('localhost', 11211))
+		self.acelerador = 22
+		self.kill = 23
+		self.fPWM = 50  # Hz (not higher with software PWM)
+		self.a = 10
+		self.b = 2
+		self.DIR = 20   # Direction GPIO Pin
+		self.STEP = 21  # Step GPIO Pin
+		self.CW = 1     # Clockwise Rotation
+		self.CCW = 0    # Counterclockwise Rotation
+		self.SPR = 1600
+		self.DELAY = .00150
 
 	def setup():
 		global acelerador_pwm, kill_pwm
