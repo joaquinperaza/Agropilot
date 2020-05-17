@@ -29,7 +29,7 @@ class TCPConnection:
 
 class GPSData:
 	global t1, ser, sio, client, listen, db
-	net=new DB()
+	net= DB()
 	listen = TCPConnection()
 	listen.connect(net.get_ip(),8888)
 	client = base.Client(('localhost', 11211))

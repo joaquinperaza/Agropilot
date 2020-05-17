@@ -57,7 +57,7 @@ class ActuadoresAgropilot:
 					self.setAcelerador(client.get('acelerador'))
 					client.set('acelerador',-1)
 			except Exception as e:
-				print repr(e)
+				print (repr(e))
 
 	def runner_child2(self):
 		while True:

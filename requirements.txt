@@ -44,7 +44,7 @@ ptyprocess==0.6.0
 pycparser==2.20
 Pygments==2.6.1
 pynmea2==1.15.0
-pyproj==2.6.0
+pyproj==1.9.6
 pyrsistent==0.16.0
 python-dateutil==2.8.1
 PyYAML==5.3.1

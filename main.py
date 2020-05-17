@@ -9,7 +9,7 @@ control=ActuadoresAgropilot()
 control.setup()
 gps=GPSData()
 gps.run()
-net=new DB()
+net=DB()
 db.update()
 mode=db.get_mode()
 
