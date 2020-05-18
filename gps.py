@@ -35,7 +35,7 @@ class GPSData:
 		self.client = base.Client(('localhost', 11211))
 	def runner_child(self):
 		while True:
-			if 1==1:
+			try:
 				lines = self.listen.readlines()
 				for line in lines:
 					if (line.startswith("$GNGGA")):
@@ -51,6 +51,8 @@ class GPSData:
 						self.client.set('lon', str(data.longitude))
 						self.client.set('spd', str(data.spd_over_grnd))
 						self.client.set('nav', str(data.true_course))
+			except Exception as e:
+				print("GPS error", repr(e))
 
 	def run(self):
 		t1 = threading.Thread(target=self.runner_child)

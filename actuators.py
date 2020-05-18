@@ -54,6 +54,10 @@ class ActuadoresAgropilot:
 			duty = self.a / 180.0 * 180.0 + self.b
 			kill_pwm.ChangeDutyCycle(duty)
 
+	def crear_giro(self,step,direccion):
+		self.client.set('step',str(step))
+		self.client.set('dir',str(direccion))
+
 	def runner_child(self):
 		while True:
 			try:
@@ -61,15 +65,15 @@ class ActuadoresAgropilot:
 
 				if int(self.client.get('acel')) != -1:
 					self.setAcelerador(int(self.client.get('acel')))
-					self.client.add('acel',"-1")
-				sleep(.1)
+					self.client.set('acel',"-1")
 			except Exception as e:
-				print ("Actuator ERR",repr(e))
+				print ("Error en servo",repr(e))
 
 	def runner_child2(self):
 		while True:
 			try:
-				if int(self.client.get('dir'))!=-1 and int(self.client.get('step'))!=-1:
+				if int(self.client.get('step'))>0:
+					print ("GIRO INCIADO",int(self.client.get('dir')),int(self.client.get('step')))
 					GPIO.output(self.DIR, int(self.client.get('dir')))
 					delay2=self.idelay
 					for x in range(int(self.client.get('step'))):
@@ -80,8 +84,8 @@ class ActuadoresAgropilot:
 						GPIO.output(self.STEP, GPIO.LOW)
 						sleep(delay2/10000000)
 					self.client.set('dir',"-1")
-					self.client.set('step',"-1")
+					self.client.set('step',"0")
 			except Exception as e:
-				print ("Motor ERR",repr(e))
+				print ("Error en Motor",repr(e))
 
 

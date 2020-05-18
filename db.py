@@ -4,6 +4,15 @@ from firebase_admin import credentials
 from firebase_admin import firestore
 from pymemcache.client import base
 
+
+def update_modo(doc_snapshot, changes, read_time):
+	try:
+		client = base.Client(('localhost', 11211))
+		modo=doc_snapshot.to_dict()["mode"]
+		client.set('mode',mode_doc["mode"])
+	except Exception as e:
+		print("Error actualizar modo", repr(e))
+
 class DB:
 	# Use the application default credentials
 	def __init__(self):
@@ -12,34 +21,43 @@ class DB:
 		self.status = self.db.collection(u'status')
 		self.conf = self.db.collection(u'conf')
 		self.client = base.Client(('localhost', 11211))
+		self.mode_watch = status.document("nav").on_snapshot(update_modo)
+
+	def get_key_float(self,key):
+		valor=None
+		try:
+			valor=float(self.client.get(key))
+		except:
+			valor=-2
 
 	def update(self):
-		self.status.document("pos").update({u'lat': float(self.client.get('lat'))})
-		self.status.document("pos").update({u'lon': float(self.client.get('lon'))})
-		self.status.document("pos").update({u'sat': float(self.client.get('sat'))})
-		self.status.document("pos").update({u'age': float(self.client.get('age'))})
-		self.status.document("pos").update({u'spd': float(self.client.get('spd'))})
-		self.status.document("pos").update({u'nav': float(self.client.get('nav'))})
-		self.status.document("motor").update({u'dir': int(self.client.get('dir'))})
-		self.status.document("motor").update({u'step': int(self.client.get('step'))})
-		if int(self.client.get('acel'))!=-1:
-			self.status.document("servos").update({u'acel': int(self.client.get('acel'))})
-		self.status.document("servos").update({u'corte': int(self.client.get('corte'))})
-	
-	def get_mode(self):
+		data={
+			u'lat': float(self.get_key_float('lat')),
+			u'lon': float(self.get_key_float('lon')),
+			u'sat': float(self.get_key_float('sat')),
+			u'age': float(self.get_key_float('age')),
+			u'spd': float(self.get_key_float('spd')),
+			u'nav': float(self.get_key_float('nav')),
+			u'm1_dir': int(self.get_key_float('dir')),
+			u'm1_stp': int(self.get_key_float('step')),
+			u's1_acl': int(self.get_key_float('acel')),
+			u's2_cte': int(self.get_key_float('corte')),
+			u'modo': self.client.get('mode'),
+			u'timestamp': firestore.SERVER_TIMESTAMP
+		}
+		self.status.document("data").update(data)
+	def oldget_mode(self):
 		mode_doc = self.status.document("nav").get().to_dict()
 		self.client.set('mode',mode_doc["mode"])
 
-	def fast_get_mode(self):
+	def get_mode(self):
 		return self.client.get('mode')
 
 	def get_ip(self):
-		mode_doc = self.conf.document("net").get().to_dict()
+		mode_doc = self.conf.document("params").get().to_dict()
 		print(mode_doc)
 		return mode_doc["ip"]
 
 	def get_test(self):
 		mode_doc = self.status.document("nav").get().to_dict()
-		self.status.document("nav").update({"mode": "stop","step": 0, "dir":0})
-		self.client.set('mode',"stop")
 		return mode_doc["step"], mode_doc["dir"]
