@@ -51,7 +51,7 @@
         <ul class="nav">
           <li>
             <a>
-             <button class="btn btn-sm btn-successs btn-block" onclick="demo.showNotification('top','left')">MANUAL</button>
+             <button class="btn btn-sm btn-successs btn-block" id="set_manual">MANUAL</button>
            </a>
          </li>
          <li>
@@ -61,12 +61,12 @@
         </li>
         <li>
           <a>
-           <button class="btn btn-sm btn-warning btn-block" onclick="demo.showNotification('top','left')">DETENER</button>
+           <button class="btn btn-sm btn-warning btn-block" id="detener">DETENER</button>
          </a>
        </li>
        <li>
         <a>
-         <button class="btn btn-sm btn-danger btn-block" onclick="demo.showNotification('top','left')">APAGAR</button>
+         <button class="btn btn-sm btn-danger btn-block" id="apagar">APAGAR</button>
        </a>
      </li>
      <li>
@@ -75,19 +75,19 @@
      </a>
    </li>
    <li>
-      <a>
-       <button class="btn btn-sm btn-default btn-block" data-toggle="modal" data-target="#ajustes">CARGAR RUTA</button>
-     </a>
-   </li>
-   <li>
-      <a>
-       <button class="btn btn-sm btn-default btn-block" data-toggle="modal" data-target="#ajustes">DESCARGAR RUTA</button>
-     </a>
-   </li>
+    <a>
+     <button class="btn btn-sm btn-default btn-block" data-toggle="modal" data-target="#ajustes">CARGAR RUTA</button>
+   </a>
+ </li>
+ <li>
+  <a>
+   <button class="btn btn-sm btn-default btn-block" data-toggle="modal" data-target="#ajustes">DESCARGAR RUTA</button>
+ </a>
+</li>
 
 
 
- </ul>
+</ul>
 </div>
 </div>
 <div class="main-panel" data="blue">
@@ -158,8 +158,8 @@
 
       <button type="button" id="centrar" class="btn btn-sm btn-info btn-outline"> CENTRAR </button> 
       <button type="button" class="btn btn-sm btn-info btn-outline"> IR AL PUNTO </button> 
-      <button type="button" class="btn btn-sm btn-info btn-outline"> MOSTRAR TRACK </button> 
-      <button type="button" class="btn btn-sm btn-info btn-outline"> OCULTAR TRACK </button> 
+      <button type="button" id="mostrar_track" class="btn btn-sm btn-info btn-outline"> MOSTRAR TRACK </button> 
+      <button type="button" id="ocultar_track" class="btn btn-sm btn-info btn-outline"> OCULTAR TRACK </button> 
     </div>
   </div>
 
@@ -279,6 +279,8 @@
 
  <script>
   // Your web app's Firebase configuration
+  var track=false;
+  var follow=false;
   var firebaseConfig = {
     apiKey: "AIzaSyDsOUb9YhLvi3uWcgzzpszzPlHo0u_ZG4I",
     authDomain: "agropiloto-2d210.firebaseapp.com",
@@ -293,11 +295,26 @@
   firebase.initializeApp(firebaseConfig);
   firebase.analytics();
   var db = firebase.firestore();
- 
+
   ///CAMBIOS DE ESTADO
   db.collection("status").doc("data")
   .onSnapshot(function(doc) {
     var datos=doc.data();
+    if(datos.modo!=$("#modo").html()){
+      $.notify({
+          icon: "tim-icons icon-square-pin",
+          message: "Se ha pasado de "+$("#modo").html()+" al modo "+datos.modo
+
+        }, {
+          type: "danger",
+          timer: 3000,
+          placement: {
+            from: "top",
+            align: "right"
+          }
+
+       });
+    }
     $("#modo").html(datos.modo);
     $("#velocidad").html(datos.spd.toFixed(2)+"km/h");
     $("#curso").html(datos.nav.toFixed(0)+" grados");
@@ -305,6 +322,7 @@
     $("#lat").html(datos.lat.toFixed(5));
     $("#lon").html(datos.lon.toFixed(5));
     updateMap(datos.nav,datos.lat,datos.lon)
+    
   });
   db.collection("conf").doc("params")
   .onSnapshot(function(doc) {
@@ -316,6 +334,9 @@
     $("#_d").val(datos.d);
     $("#_log").val(localStorage.getItem('_log'));
   });
+
+
+  
 
 
 </script>
@@ -334,50 +355,117 @@
 <script src="../assets/js/black-dashboard.min.js?v=1.0.0"></script><!-- Black Dashboard DEMO methods, don't include it in your project! -->
 <script src="../assets/demo/demo.js"></script>
 <script>
-  var follow=false;
   $(document).ready(function() {
     $().ready(function() {
 
+      $('#mostrar_track').click(function(){
+        track=true;
+        poly.setMap(map);
+         $.notify({
+          icon: "tim-icons icon-square-pin",
+          message: "Mostrar track activado!"
 
+        }, {
+          type: "success",
+          timer: 3000,
+          placement: {
+            from: "top",
+            align: "right"
+          }
 
-  $('#centrar').click(function(){
-    follow=true;
-    $.notify({
-      icon: "tim-icons icon-square-pin",
-      message: "Centrado activado!"
+       });
+       });
 
-    }, {
-      type: "success",
-      timer: 5000,
-      placement: {
-        from: "top",
-        align: "right"
-      }
-    });
-  });
-  $('#save_params').click(function(){
-    localStorage.setItem('_log',$("#_log").val());
-    db.collection("conf").doc("params").set({
-    ip: $("#_ip").val(),
-    ancho: $("#_ancho").val(),
-    p: $("#_p").val(),
-    i: $("#_i").val(),
-    d: $("#_d").val(),
-}).then(function(){
-  $.notify({
-      icon: "tim-icons icon-settings",
-      message: "Ajustes guardados correctamente!"
+     
 
-    }, {
-      type: "success",
-      timer: 8000,
-      placement: {
-        from: "top",
-        align: "right"
-      }
-    });
-});
-  });
+      $('#ocultar_track').click(function(){
+        track=false;
+        poly.setMap(null);
+         $.notify({
+          icon: "tim-icons icon-square-pin",
+          message: "Mostrar track desactivado!"
+
+        }, {
+          type: "warning",
+          timer:3000,
+          placement: {
+            from: "top",
+            align: "right"
+          }
+      });});
+
+      $('#centrar').click(function(){
+        follow=true;
+        $.notify({
+          icon: "tim-icons icon-square-pin",
+          message: "Centrado activado!"
+
+        }, {
+          type: "success",
+          timer: 5000,
+          placement: {
+            from: "top",
+            align: "right"
+          }
+        });
+      });
+
+      $('#detener').click(function(){
+        db.collection("status").doc("nav").update({'mode': "STOP"})
+         $.notify({
+          icon: "tim-icons icon-square-pin",
+          message: "DETENCION INICIADA!"
+
+        }, {
+          type: "success",
+          timer: 3000,
+          placement: {
+            from: "top",
+            align: "right"
+          }
+
+       });
+       });
+      $('#apagar').click(function(){
+        db.collection("status").doc("nav").update({'mode': "APAGAR"})
+         $.notify({
+          icon: "tim-icons icon-square-pin",
+          message: "APAGADO INICIADO!"
+
+        }, {
+          type: "danger",
+          timer: 3000,
+          placement: {
+            from: "top",
+            align: "right"
+          }
+
+       });
+       });
+
+      $('#save_params').click(function(){
+        localStorage.setItem('_log',$("#_log").val());
+        db.collection("conf").doc("params").set({
+          ip: $("#_ip").val(),
+          ancho: $("#_ancho").val(),
+          p: $("#_p").val(),
+          i: $("#_i").val(),
+          d: $("#_d").val(),
+        }).then(function(){
+          $.notify({
+            icon: "tim-icons icon-settings",
+            message: "Ajustes guardados correctamente!"
+
+          }, {
+            type: "success",
+            timer: 8000,
+            placement: {
+              from: "top",
+              align: "right"
+            }
+          });
+        });
+      });
 
       $sidebar = $('.sidebar');
       $navbar = $('.navbar');
@@ -485,28 +573,28 @@
         $('body').removeClass('white-content');
       });
     });
-  });
+});
 </script>
-<script>
-  $(document).ready(function() {
-      // Javascript method's body can be found in assets/js/demos.js
-      demo.initDashboardPageCharts();
 
-    });
-  </script>
   <script>
    var map;
    var marker;
+   var poly;
    function updateMap(bearing,lat,lon) {
     // var bearing = 135;
 
     var icon = marker.getIcon();
     icon.rotation = bearing;
     marker.setIcon(icon);
-    marker.setPosition( new google.maps.LatLng( lat, lon ) );
+    var latlng=new google.maps.LatLng( lat, lon )
+    marker.setPosition(latlng );
     if (follow)
     {
-      map.panTo(new google.maps.LatLng( lat, lon ));
+      map.panTo(latlng);
+    }
+    if(track){
+      var path = poly.getPath();
+      path.push(latlng);
     }
     
   }
@@ -528,6 +616,12 @@
 
       }
     });
+    poly = new google.maps.Polyline({
+          strokeColor: '#FFFF00',
+          strokeOpacity: 1.0,
+          strokeWeight: 3
+        });
+        poly.setMap(map);
   }
 
 </script>
