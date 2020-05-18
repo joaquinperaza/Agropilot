@@ -157,7 +157,7 @@
     <div class="btn-group">
 
       <button type="button" id="centrar" class="btn btn-sm btn-info btn-outline"> CENTRAR </button> 
-      <button type="button" class="btn btn-sm btn-info btn-outline"> IR AL PUNTO </button> 
+      <button type="button" id="marcar_punto" class="btn btn-sm btn-info btn-outline"> IR AL PUNTO </button> 
       <button type="button" id="mostrar_track" class="btn btn-sm btn-info btn-outline"> MOSTRAR TRACK </button> 
       <button type="button" id="ocultar_track" class="btn btn-sm btn-info btn-outline"> OCULTAR TRACK </button> 
     </div>
@@ -281,6 +281,7 @@
   // Your web app's Firebase configuration
   var track=false;
   var follow=false;
+  var place_marker=false;
   var firebaseConfig = {
     apiKey: "AIzaSyDsOUb9YhLvi3uWcgzzpszzPlHo0u_ZG4I",
     authDomain: "agropiloto-2d210.firebaseapp.com",
@@ -410,8 +411,26 @@
         });
       });
 
+      $('#marcar_punto').click(function(){
+        place_marker=true;
+        $.notify({
+          icon: "tim-icons icon-square-pin",
+          message: "Seleccione el destino en el mapa."
+
+        }, {
+          type: "info",
+          timer: 8000,
+          placement: {
+            from: "top",
+            align: "right"
+          }
+        });
+        target.setMap(null);
+      });
+
       $('#detener').click(function(){
-        db.collection("status").doc("nav").update({'mode': "STOP"})
+        db.collection("status").doc("nav").update({'mode': "STOP"});
+        
          $.notify({
           icon: "tim-icons icon-square-pin",
           message: "DETENCION INICIADA!"
@@ -425,6 +444,7 @@
           }
 
        });
+         target.setMap(null);
        });
       $('#apagar').click(function(){
         db.collection("status").doc("nav").update({'mode': "APAGAR"})
@@ -579,6 +599,7 @@
   <script>
    var map;
    var marker;
+   var target;
    var poly;
    function updateMap(bearing,lat,lon) {
     // var bearing = 135;
@@ -622,6 +643,31 @@
           strokeWeight: 3
         });
         poly.setMap(map);
+
+  map.addListener('click', function(e) {
+
+    if(place_marker)
+    { 
+      place_marker=false;
+      $.notify({
+            icon: "tim-icons icon-settings",
+            message: "Destino marcado correctamente!"
+
+          }, {
+            type: "success",
+            timer: 8000,
+            placement: {
+              from: "top",
+              align: "right"
+            }
+      });
+      target = new google.maps.Marker({
+      position: e.latLng,
+      map: map,
+      });
+      db.collection("status").doc("nav").update({'mode': "TARGET", 'lat': e.latLng.lat(), 'lon': e.latLng.lng()})
+    }
+  });
   }
 
 </script>
