@@ -33,6 +33,21 @@
   <link href="../assets/css/black-dashboard.css?v=1.0.0" rel="stylesheet" />
   <!-- CSS Just for demo purpose, don't include it in your project -->
   <link href="../assets/demo/demo.css" rel="stylesheet" />
+  <style>
+
+  #floating-panel {
+        position: absolute;
+        bottom: 5px;
+        left: 15px;
+        z-index: 5;
+        padding: 5px;
+        border: 1px solid #999;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
+      }
+</style>
 </head>
 
 <body class="">
@@ -52,37 +67,33 @@
           <li>
             <a>
              <button class="btn btn-sm btn-successs btn-block" id="set_manual">MANUAL</button>
-           </a>
-         </li>
-         <li>
-          <a>
+       
             <button class="btn btn-sm btn-success btn-block" onclick="demo.showNotification('top','left')">AUTO</button>
-          </a>
-        </li>
-        <li>
-          <a>
+       
            <button class="btn btn-sm btn-warning btn-block" id="detener">DETENER</button>
+           <button class="btn btn-sm btn-danger btn-block" id="apagar">APAGAR</button>
          </a>
        </li>
-       <li>
-        <a>
-         <button class="btn btn-sm btn-danger btn-block" id="apagar">APAGAR</button>
-       </a>
-     </li>
-     <li>
-      <a>
-       <button class="btn btn-sm btn-secondary btn-block" data-toggle="modal" data-target="#ajustes">AJUSTES</button>
-     </a>
-   </li>
+
+
    <li>
     <a>
-     <button class="btn btn-sm btn-default btn-block" data-toggle="modal" data-target="#ajustes">CARGAR RUTA</button>
+     <button class="btn btn-sm btn-default btn-block" data-toggle="modal" data-target="#ajustes">GRABAR LIMITE</button>
+     <button class="btn btn-sm btn-default btn-block" data-toggle="modal" data-target="#ajustes">MARCAR A</button>
+     <button class="btn btn-sm btn-default btn-block" data-toggle="modal" data-target="#ajustes">MARCAR B</button>
+     <button class="btn btn-sm btn-default btn-block" data-toggle="modal" data-target="#ajustes">CREAR RUTA</button>
+</a>
+ </li>
+ <li>
+   <a>
+     <button class="btn btn-sm btn-info btn-block" data-toggle="modal" data-target="#ajustes">CARGAR RUTA</button>
+     <button class="btn btn-sm btn-info btn-block" data-toggle="modal" data-target="#ajustes">DESCARGAR RUTA</button>
    </a>
  </li>
  <li>
-  <a>
-   <button class="btn btn-sm btn-default btn-block" data-toggle="modal" data-target="#ajustes">DESCARGAR RUTA</button>
- </a>
+   <a>
+       <button class="btn btn-sm btn-secondary btn-block" data-toggle="modal" data-target="#ajustes">AJUSTES</button>
+     </a>
 </li>
 
 
@@ -145,9 +156,13 @@
   <div class="content">
 
     <div class="row">
+   
      <div class="col-md-12">
 
-
+ <div id="floating-panel">
+      <input class="preset4" id="preset4" type="range" min="-10" max="10" data-width="1000" data-height="100" data-angleOffset="220"
+               data-angleRange="280">
+    </div>
       <div id="map" class="map"></div>
 
 
@@ -303,7 +318,7 @@
     var datos=doc.data();
     if(datos.modo!=$("#modo").html()){
       $.notify({
-          icon: "tim-icons icon-square-pin",
+          icon: "tim-icons icon-bulb-63",
           message: "Se ha pasado de "+$("#modo").html()+" al modo "+datos.modo
 
         }, {
@@ -322,6 +337,12 @@
     $("#sync").html((Date.now()/1000-datos.timestamp.toMillis()/1000).toFixed()+"seg.");
     $("#lat").html(datos.lat.toFixed(5));
     $("#lon").html(datos.lon.toFixed(5));
+    if(datos.modo=="MANUAL")
+    {
+      $("#floating-panel").show();
+    } else{
+      $("#floating-panel").hide();
+    }
     updateMap(datos.nav,datos.lat,datos.lon)
     
   });
@@ -358,6 +379,23 @@
 <script>
   $(document).ready(function() {
     $().ready(function() {
+
+
+
+$("#preset4").change(function(){
+    
+    var dir=0
+    var newval=parseInt($(this).val())*2500;
+    if(newval<0){
+      dir=1;
+      newval=Math.abs(newval)
+    }
+    
+    if(newval!=0)
+      db.collection("status").doc("nav").update({ 'step': newval.toString(), 'dir': dir.toString()}).then(function(){
+        $("#preset4").val("0");
+    });
+  });
 
       $('#mostrar_track').click(function(){
         track=true;
@@ -462,6 +500,25 @@
 
        });
        });
+
+       $('#set_manual').click(function(){
+        db.collection("status").doc("nav").update({'mode': "MANUAL"})
+         $.notify({
+          icon: "tim-icons icon-controller",
+          message: "Iniciando modo manual!"
+
+        }, {
+          type: "danger",
+          timer: 5000,
+          placement: {
+            from: "top",
+            align: "right"
+          }
+
+       });
+       });
+
+       
 
       $('#save_params').click(function(){
         localStorage.setItem('_log',$("#_log").val());

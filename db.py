@@ -3,13 +3,15 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 from pymemcache.client import base
+from coordinates import Coordinate
+
 
 
 def update_modo(doc_snapshot, changes, read_time):
 	try:
 		client = base.Client(('localhost', 11211))
 		modo=doc_snapshot.to_dict()["mode"]
-		client.set('mode',mode_doc["mode"])
+		client.set('mode',modo)
 	except Exception as e:
 		print("Error actualizar modo", repr(e))
 
@@ -52,10 +54,14 @@ class DB:
 
 	def get_mode(self):
 		return self.client.get('mode')
+	
+	def get_target(self):
+		mode_doc = self.status.document("nav").get().to_dict()
+		target=Coordinate( float(mode_doc["lat"]) , float(mode_doc["lon"]) )
+		return target
 
 	def get_ip(self):
 		mode_doc = self.conf.document("params").get().to_dict()
-		print(mode_doc)
 		return mode_doc["ip"]
 
 	def get_test(self):

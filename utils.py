@@ -1,6 +1,18 @@
 from coordinates import Coordinate
 import math
 from shapely.geometry import Point, LineString
+from pyproj import Geod, CRS, transform
+
+
+g = Geod(ellps='WGS84')
+wgs84=CRS("EPSG:4326")
+UTM=CRS("EPSG:32721") # UTM 21S
+
+
+def to_utm(c):
+    xx,yy=transform(wgs84, UTM, c.y, c.x)
+    return Coordinate(xx,yy)
+
 def degree(x):
     pi=math.pi
     degree=(x*180)/pi
@@ -18,10 +30,15 @@ def offset(point,angle,d):
 
 def vector(angle):
     return  math.cos(radians(90-angle)),  math.sin(radians(90-angle))
+
 def bearing(b,a):
     dx = a.x-b.x
     dy = a.y-b.y
-    return 90-degree(math.atan2(dy,dx))
+    bearing=90-degree(math.atan2(dy,dx))
+    if bearing<0:
+        bearing+=360
+    return bearing
+
 def extend(a,b):
     m = (a.y-b.y)/(a.x-b.x)
     _b= (a.x*b.y - b.x*a.y)/(a.x-b.x)

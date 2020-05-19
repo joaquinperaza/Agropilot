@@ -77,7 +77,13 @@ def move(LatLon):
 
 
 coords2=coords.coords()
-
+for c in coords2:
+	xx,yy=transform(wgs84, UTM, c.y, c.x)
+	limit_line.append(vec(xx,.5,yy))
+xx,yy=transform(wgs84, UTM, coords.a.y, coords.a.x)
+qtemp=box( color=color.red, size=vec(10,10,10), pos=vec(xx,.5,yy) ) 
+xx,yy=transform(wgs84, UTM, coords.b.y, coords.b.x)
+qtemp=box( color=color.red, size=vec(10,10,10), pos=vec(xx,.5,yy) ) 
 path = nav.create_path(coords.a, coords.b, coords2,19,reverse=True,dir=0)
 for c in path:
     ab.append(vec(c.x,.5,c.y))
