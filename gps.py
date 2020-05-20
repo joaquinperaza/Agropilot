@@ -9,32 +9,32 @@ import time
 from coordinates import Coordinate
 from datetime import date, datetime, timedelta
 
+Coordinate.default_order = 'yx'
 
 class TCPConnection:
-    def __init__(self, sock=None):
-        if sock is None:
-            self.sock = socket.socket(
-                            socket.AF_INET, socket.SOCK_STREAM)
-        else:
-            self.sock = sock
+	def __init__(self, sock=None):
+		if sock is None:
+			self.sock = socket.socket(
+							socket.AF_INET, socket.SOCK_STREAM)
+		else:
+			self.sock = sock
 
-    def connect(self, host, port):
-        try:
-            self.sock.connect((host, port))
-            print('Successful Connection')
-        except:
-            print('Connection Failed')
+	def connect(self, host, port):
+		try:
+			self.sock.connect((host, port))
+			print('Successful Connection')
+		except:
+			print('Connection Failed')
 
-    def readlines(self):
-        data = self.sock.recv(1024).decode('utf-8')
-        return data.split("\r\n")
+	def readlines(self):
+		data = self.sock.recv(1024).decode('utf-8')
+		return data.split("\r\n")
 
 
 class GPSData:
 	def __init__(self):
 		self.net= DB()
 		self.listen = TCPConnection()
-		self.listen.connect(self.net.get_ip(),8888)
 		self.client = base.Client(('localhost', 11211))
 		self.nav=0
 		self.spd=0
@@ -42,6 +42,8 @@ class GPSData:
 		self.lon=0
 		self.rad=0
 		self.last=datetime.now()
+		self.listen.connect(self.net.get_ip(),8888)
+		self.t1=None
 	def runner_child(self):
 		while True:
 			try:
@@ -73,7 +75,7 @@ class GPSData:
 	def pos(self):
 		return Coordinate( self.lat , self.lon )
 	def run(self):
-		t1 = threading.Thread(target=self.runner_child)
-		t1.start()
+		self.t1 = threading.Thread(target=self.runner_child)
+		self.t1.start()
 	def stop(self):
-		t1.stop()
+		self.t1.stop()

@@ -4,7 +4,9 @@ from firebase_admin import credentials
 from firebase_admin import firestore
 from pymemcache.client import base
 from coordinates import Coordinate
-
+from time import sleep
+import utils
+Coordinate.default_order = 'yx'
 
 
 def update_modo(doc_snapshot, changes, read_time):
@@ -15,6 +17,17 @@ def update_modo(doc_snapshot, changes, read_time):
 	except Exception as e:
 		print("Error actualizar modo", repr(e))
 
+def update_conf(doc_snapshot, changes, read_time):
+	try:
+		client = base.Client(('localhost', 11211))
+		params=doc_snapshot.to_dict()
+		client.set('p', params["p"])
+		client.set('i', params["i"])
+		client.set('d', params["d"])
+		client.set('ancho',params["ancho"])
+	except Exception as e:
+		print("Error actualizar conf", repr(e))
+
 class DB:
 	# Use the application default credentials
 	def __init__(self):
@@ -22,8 +35,10 @@ class DB:
 		self.db = firestore.client()
 		self.status = self.db.collection(u'status')
 		self.conf = self.db.collection(u'conf')
+		self.mission = self.db.collection(u'mission')
 		self.client = base.Client(('localhost', 11211))
 		self.mode_watch = status.document("nav").on_snapshot(update_modo)
+		self.mode_watch2 = conf.document("params").on_snapshot(update_conf)
 
 	def get_key_float(self,key):
 		valor=None
@@ -55,6 +70,13 @@ class DB:
 	def get_mode(self):
 		return self.client.get('mode')
 	
+	def set_mode(self,modo):
+		self.status.document("nav").update({"mode":modo})
+		sleep(1)
+
+	def get_ancho(self):
+		return int(self.client.get('mode'))
+	
 	def get_target(self):
 		mode_doc = self.status.document("nav").get().to_dict()
 		target=Coordinate( float(mode_doc["lat"]) , float(mode_doc["lon"]) )
@@ -66,4 +88,42 @@ class DB:
 
 	def get_test(self):
 		mode_doc = self.status.document("nav").get().to_dict()
+		self.status.document("nav").update({"step": "0", "dir": "0"})
 		return mode_doc["step"], mode_doc["dir"]
+
+	def add_limit(self,coord):
+		coord2 = firestore.GeoPoint(coord.y, coord.x)
+		self.mission.document("routes").update({u'limit': firestore.ArrayUnion([coord2])})
+	
+	def set_wp(self,coords):
+		nav=[]
+		for cord in coords:
+			coord=utils.to_wgs84(cord)
+			nav.append(firestore.GeoPoint(coord.y, coord.x))
+		self.mission.document("routes").update({u'nav': nav})
+	
+	def set_a(self,coord):
+		coord2 = firestore.GeoPoint(coord.y, coord.x)
+		self.client.set('a_lat',str(coord.y))
+		self.client.set('a_lon',str(coord.x))
+		self.mission.document("routes").update({u'a': coord2})
+		self.status.document("nav").update({"mode":"STOP"})
+
+	def set_b(self,coord):
+		coord2 = firestore.GeoPoint(coord.y, coord.x)
+		self.client.set('b_lat',str(coord.y))
+		self.client.set('b_lon',str(coord.x))
+		self.mission.document("routes").update({u'b': coord2})
+		self.status.document("nav").update({"mode":"STOP"})
+
+	def clear_mission(self):
+		self.mission.document("routes").set({"nav": [], "limit": [],"a": None, "b": None})
+	
+	def clear_mission_wo(self):
+		self.mission.document("routes").update({"nav": []})
+
+	def update_child(self):
+		while True:
+			try:
+				self.update()
+				sleep(2)
