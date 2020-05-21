@@ -668,6 +668,27 @@
       db.collection("status").doc("nav").update({'mode': "TARGET", 'lat': e.latLng.lat(), 'lon': e.latLng.lng()})
     }
   });
+
+  map.addListener('center_changed', function() {
+    // 3 seconds after the center of the map has changed, pan back to the
+    // marker.
+    if(follow){
+      follow=!follow;
+      $.notify({
+          icon: "tim-icons icon-square-pin",
+          message: "Centrado desactivado!"
+
+        }, {
+          type: "warning",
+          timer: 3000,
+          placement: {
+            from: "top",
+            align: "right"
+          }
+        });
+
+    }
+  });
   }
 
 </script>
