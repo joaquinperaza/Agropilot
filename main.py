@@ -12,6 +12,7 @@ control=ActuadoresAgropilot()
 control.setup()
 gps=GPSData()
 gps.run()
+gps.net.run()
 sleep(1)
 
 mode=gps.net.get_mode()

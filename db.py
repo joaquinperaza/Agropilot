@@ -7,26 +7,8 @@ from coordinates import Coordinate
 from time import sleep
 import utils
 Coordinate.default_order = 'yx'
+import threading
 
-
-def update_modo(doc_snapshot, changes, read_time):
-	try:
-		client = base.Client(('localhost', 11211))
-		modo=doc_snapshot.to_dict()["mode"]
-		client.set('mode',modo)
-	except Exception as e:
-		print("Error actualizar modo", repr(e))
-
-def update_conf(doc_snapshot, changes, read_time):
-	try:
-		client = base.Client(('localhost', 11211))
-		params=doc_snapshot.to_dict()
-		client.set('p', params["p"])
-		client.set('i', params["i"])
-		client.set('d', params["d"])
-		client.set('ancho',params["ancho"])
-	except Exception as e:
-		print("Error actualizar conf", repr(e))
 
 class DB:
 	# Use the application default credentials
@@ -39,6 +21,28 @@ class DB:
 		self.client = base.Client(('localhost', 11211))
 		self.mode_watch = status.document("nav").on_snapshot(update_modo)
 		self.mode_watch2 = conf.document("params").on_snapshot(update_conf)
+	
+	@staticmethod
+	def update_modo(doc_snapshot, changes, read_time):
+		try:
+			client = base.Client(('localhost', 11211))
+			modo=doc_snapshot.to_dict()["mode"]
+			client.set('mode',modo)
+		except Exception as e:
+			print("Error actualizar modo", repr(e))
+
+	@staticmethod
+	def update_conf(doc_snapshot, changes, read_time):
+		try:
+			client = base.Client(('localhost', 11211))
+			params=doc_snapshot.to_dict()
+			client.set('p', params["p"])
+			client.set('i', params["i"])
+			client.set('d', params["d"])
+			client.set('ancho',params["ancho"])
+		except Exception as e:
+			print("Error actualizar conf", repr(e))
+
 
 	def get_key_float(self,key):
 		valor=None
@@ -127,3 +131,7 @@ class DB:
 			try:
 				self.update()
 				sleep(2)
+
+	def run(self):
+		t1 = threading.Thread(target=self.update_child)
+		t1.start()
