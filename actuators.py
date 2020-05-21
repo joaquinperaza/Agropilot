@@ -14,8 +14,8 @@ class ActuadoresAgropilot:
 		self.b = 2.0
 		self.DIR = 18  # Direction GPIO Pin
 		self.STEP = 36  # Step GPIO Pin
-		self.CW = 1     # Clockwise Rotation
-		self.CCW = 0    # Counterclockwise Rotation
+		self.CW = 1	 # Clockwise Rotation
+		self.CCW = 0	# Counterclockwise Rotation
 		self.SPR = 1600
 		self.delay = 50
 		self.idelay = 500
@@ -76,6 +76,7 @@ class ActuadoresAgropilot:
 					print ("GIRO INCIADO",int(self.client.get('dir')),int(self.client.get('step')))
 					GPIO.output(self.DIR, int(self.client.get('dir')))
 					delay2=self.idelay
+					steps=self.client.get('step')
 					for x in range(int(self.client.get('step'))):
 						if delay2>self.delay: 
 							delay2-=1
@@ -83,7 +84,7 @@ class ActuadoresAgropilot:
 						sleep(delay2/10000000)
 						GPIO.output(self.STEP, GPIO.LOW)
 						sleep(delay2/10000000)
-					self.client.set('dir',"-1")
+					self.client.set('dir',"0")
 					self.client.set('step',"0")
 			except Exception as e:
 				print ("Error en Motor",repr(e))

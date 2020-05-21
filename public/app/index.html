@@ -22,9 +22,9 @@
   <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
   <title>
-    AGROPILOTO
+	AGROPILOTO
   </title>
-  <!--     Fonts and icons     -->
+  <!--	 Fonts and icons	 -->
   <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet" />
   <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
   <!-- Nucleo Icons -->
@@ -33,56 +33,67 @@
   <link href="../assets/css/black-dashboard.css?v=1.0.0" rel="stylesheet" />
   <!-- CSS Just for demo purpose, don't include it in your project -->
   <link href="../assets/demo/demo.css" rel="stylesheet" />
+  <style>
+
+  #floating-panel {
+		position: absolute;
+		bottom: 5px;
+		left: 15px;
+		z-index: 5;
+		padding: 5px;
+		border: 1px solid #999;
+		text-align: center;
+		font-family: 'Roboto','sans-serif';
+		line-height: 30px;
+		padding-left: 10px;
+	  }
+</style>
 </head>
 
 <body class="">
   <div class="wrapper">
-    <div class="sidebar" data="blue">
-      <!--
-        Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red"
-      -->
-      <div class="sidebar-wrapper">
-        <div class="logo">
+	<div class="sidebar" data="blue">
+	  <!--
+		Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red"
+	  -->
+	  <div class="sidebar-wrapper">
+		<div class="logo">
 
-          <a href="https://agrotrack.uy/" class="simple-text logo-normal">
-            AgroTrack
-          </a>
-        </div>
-        <ul class="nav">
-          <li>
-            <a>
-             <button class="btn btn-sm btn-successs btn-block" id="set_manual">MANUAL</button>
-           </a>
-         </li>
-         <li>
-          <a>
-            <button class="btn btn-sm btn-success btn-block" onclick="demo.showNotification('top','left')">AUTO</button>
-          </a>
-        </li>
-        <li>
-          <a>
-           <button class="btn btn-sm btn-warning btn-block" id="detener">DETENER</button>
-         </a>
-       </li>
-       <li>
-        <a>
-         <button class="btn btn-sm btn-danger btn-block" id="apagar">APAGAR</button>
-       </a>
-     </li>
-     <li>
-      <a>
-       <button class="btn btn-sm btn-secondary btn-block" data-toggle="modal" data-target="#ajustes">AJUSTES</button>
-     </a>
-   </li>
+		  <a href="https://agrotrack.uy/" class="simple-text logo-normal">
+			AgroTrack
+		  </a>
+		</div>
+		<ul class="nav">
+		  <li>
+			<a>
+			 <button class="btn btn-sm btn-successs btn-block" id="set_manual">MANUAL</button>
+	   
+			<button class="btn btn-sm btn-success btn-block" onclick="demo.showNotification('top','left')">AUTO</button>
+	   
+		   <button class="btn btn-sm btn-warning btn-block" id="detener">DETENER</button>
+		   <button class="btn btn-sm btn-danger btn-block" id="apagar">APAGAR</button>
+		 </a>
+	   </li>
+
+
    <li>
-    <a>
-     <button class="btn btn-sm btn-default btn-block" data-toggle="modal" data-target="#ajustes">CARGAR RUTA</button>
+	<a>
+	 <button class="btn btn-sm btn-default btn-block" id="limite">GRABAR LIMITE</button>
+	 <button class="btn btn-sm btn-default btn-block" id="marcar_a">MARCAR A</button>
+	 <button class="btn btn-sm btn-default btn-block" id="marcar_b">MARCAR B</button>
+	 <button class="btn btn-sm btn-default btn-block" id="ruta">CREAR RUTA</button>
+</a>
+ </li>
+ <li>
+   <a>
+	 <button class="btn btn-sm btn-info btn-block" data-toggle="modal" data-target="#ajustes">CARGAR RUTA</button>
+	 <button class="btn btn-sm btn-info btn-block" data-toggle="modal" data-target="#ajustes">DESCARGAR RUTA</button>
    </a>
  </li>
  <li>
-  <a>
-   <button class="btn btn-sm btn-default btn-block" data-toggle="modal" data-target="#ajustes">DESCARGAR RUTA</button>
- </a>
+   <a>
+	   <button class="btn btn-sm btn-secondary btn-block" data-toggle="modal" data-target="#ajustes">AJUSTES</button>
+	 </a>
 </li>
 
 
@@ -93,145 +104,148 @@
 <div class="main-panel" data="blue">
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-absolute navbar-transparent">
-    <div class="container-fluid">
-      <div class="navbar-wrapper">
-        <div class="navbar-toggle d-inline">
-          <button type="button" class="navbar-toggler">
-            <span class="navbar-toggler-bar bar1"></span>
-            <span class="navbar-toggler-bar bar2"></span>
-            <span class="navbar-toggler-bar bar3"></span>
-          </button>
-        </div>
-        <a class="navbar-brand" href="javascript:void(0)">PANEL DE CONTROL</a>
-      </div>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-bar navbar-kebab"></span>
-        <span class="navbar-toggler-bar navbar-kebab"></span>
-        <span class="navbar-toggler-bar navbar-kebab"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navigation">
-        <ul class="navbar-nav ml-auto">
-          <li class="dropdown nav-item">
-            <a href="javascript:void(0)" class="dropdown-toggle nav-link" data-toggle="dropdown">
-              <div class="notification d-none d-lg-block d-xl-block"></div>
-              <i class="tim-icons icon-sound-wave"></i>
-              <p class="d-lg-none">
-                Registro rapido
-              </p>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-right dropdown-navbar" id="notificaciones">
-              <li class="nav-link"><a href="javascript:void(0)" class="nav-item dropdown-item">Alertas en tiempo real</a></li>
-            </ul>
-          </li>
+	<div class="container-fluid">
+	  <div class="navbar-wrapper">
+		<div class="navbar-toggle d-inline">
+		  <button type="button" class="navbar-toggler">
+			<span class="navbar-toggler-bar bar1"></span>
+			<span class="navbar-toggler-bar bar2"></span>
+			<span class="navbar-toggler-bar bar3"></span>
+		  </button>
+		</div>
+		<a class="navbar-brand" href="javascript:void(0)">PANEL DE CONTROL</a>
+	  </div>
+	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-bar navbar-kebab"></span>
+		<span class="navbar-toggler-bar navbar-kebab"></span>
+		<span class="navbar-toggler-bar navbar-kebab"></span>
+	  </button>
+	  <div class="collapse navbar-collapse" id="navigation">
+		<ul class="navbar-nav ml-auto">
+		  <li class="dropdown nav-item">
+			<a href="javascript:void(0)" class="dropdown-toggle nav-link" data-toggle="dropdown">
+			  <div class="notification d-none d-lg-block d-xl-block"></div>
+			  <i class="tim-icons icon-sound-wave"></i>
+			  <p class="d-lg-none">
+				Registro rapido
+			  </p>
+			</a>
+			<ul class="dropdown-menu dropdown-menu-right dropdown-navbar" id="notificaciones">
+			  <li class="nav-link"><a href="javascript:void(0)" class="nav-item dropdown-item">Alertas en tiempo real</a></li>
+			</ul>
+		  </li>
 
-          <li class="separator d-lg-none"></li>
-        </ul>
-      </div>
-    </div>
+		  <li class="separator d-lg-none"></li>
+		</ul>
+	  </div>
+	</div>
   </nav>
   <div class="modal modal-search fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModal" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="SEARCH">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <i class="tim-icons icon-simple-remove"></i>
-          </button>
-        </div>
-      </div>
-    </div>
+	<div class="modal-dialog" role="document">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="SEARCH">
+		  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<i class="tim-icons icon-simple-remove"></i>
+		  </button>
+		</div>
+	  </div>
+	</div>
   </div>
   <!-- End Navbar -->
   <div class="content">
 
-    <div class="row">
-     <div class="col-md-12">
+	<div class="row">
+   
+	 <div class="col-md-12">
+
+ <div id="floating-panel">
+	  <input class="preset4" id="preset4" type="range" min="-10" max="10" data-width="1000" data-height="100" data-angleOffset="220"
+			   data-angleRange="280">
+	</div>
+	  <div id="map" class="map"></div>
 
 
-      <div id="map" class="map"></div>
-
-
-    </div>
+	</div>
   </div>
-  <div class="col-md-6 ml-auto mr-auto">
-    <div class="btn-group">
+  <div class="col-md-5 ml-auto mr-auto">
+	<div class="btn-group">
 
-      <button type="button" id="centrar" class="btn btn-sm btn-info btn-outline"> CENTRAR </button> 
-      <button type="button" id="marcar_punto" class="btn btn-sm btn-info btn-outline"> IR AL PUNTO </button> 
-      <button type="button" id="mostrar_track" class="btn btn-sm btn-info btn-outline"> MOSTRAR TRACK </button> 
-      <button type="button" id="ocultar_track" class="btn btn-sm btn-info btn-outline"> OCULTAR TRACK </button> 
-    </div>
+	  <button type="button" id="centrar" class="btn btn-sm btn-info btn-outline"> CENTRAR </button> 
+	  <button type="button" id="marcar_punto" class="btn btn-sm btn-info btn-outline"> IR AL PUNTO </button> 
+	  <button type="button" id="mostrar_track" class="btn btn-sm btn-info btn-outline"> MOSTRAR TRACK </button> 
+	</div>
   </div>
 
   <br>
   <div class="row">
-    <div class="col-lg-2 col-md-4">
-      <div class="card card-chart">
-        <div class="card-header">
-          <h5 class="card-category">Modo</h5>
-          <h4 class="card-title"><i class="tim-icons icon-credit-card text-info"></i><span id="modo">Cargando...</span></h4>
+	<div class="col-lg-2 col-md-4">
+	  <div class="card card-chart">
+		<div class="card-header">
+		  <h5 class="card-category">Modo</h5>
+		  <h4 class="card-title"><i class="tim-icons icon-credit-card text-info"></i><span id="modo">Cargando...</span></h4>
 
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-2 col-md-4">
-      <div class="card card-chart">
-        <div class="card-header">
-          <h5 class="card-category">Velocidad</h5>
-          <h4 class="card-title"><i class="tim-icons icon-send text-info"></i><span id="velocidad">Cargando...</span></h4>
+		</div>
+	  </div>
+	</div>
+	<div class="col-lg-2 col-md-4">
+	  <div class="card card-chart">
+		<div class="card-header">
+		  <h5 class="card-category">Velocidad</h5>
+		  <h4 class="card-title"><i class="tim-icons icon-send text-info"></i><span id="velocidad">Cargando...</span></h4>
 
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-2 col-md-4">
-      <div class="card card-chart">
-        <div class="card-header">
-          <h5 class="card-category">Curso</h5>
-          <h4 class="card-title"><i class="tim-icons icon-compass-05 text-info"></i><span id="curso">Cargando...</span></h4>
+		</div>
+	  </div>
+	</div>
+	<div class="col-lg-2 col-md-4">
+	  <div class="card card-chart">
+		<div class="card-header">
+		  <h5 class="card-category">Curso</h5>
+		  <h4 class="card-title"><i class="tim-icons icon-compass-05 text-info"></i><span id="curso">Cargando...</span></h4>
 
-        </div>
-      </div>
-    </div>
+		</div>
+	  </div>
+	</div>
 
-    <div class="col-lg-2 col-md-4">
-      <div class="card card-chart">
-        <div class="card-header">
-          <h5 class="card-category">Sincronizado</h5>
-          <h4 class="card-title"><i class="tim-icons icon-sound-wave text-info"></i><span id="sync">Cargando...</span></h4>
+	<div class="col-lg-2 col-md-4">
+	  <div class="card card-chart">
+		<div class="card-header">
+		  <h5 class="card-category">Sincronizado</h5>
+		  <h4 class="card-title"><i class="tim-icons icon-sound-wave text-info"></i><span id="sync">Cargando...</span></h4>
 
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-2 col-md-4">
-      <div class="card card-chart">
-        <div class="card-header">
-          <h5 class="card-category">Lat</h5>
-          <h4 class="card-title"><i class="tim-icons icon-square-pin text-info"></i><span id="lat">Cargando...</span></h4>
+		</div>
+	  </div>
+	</div>
+	<div class="col-lg-2 col-md-4">
+	  <div class="card card-chart">
+		<div class="card-header">
+		  <h5 class="card-category">Lat</h5>
+		  <h4 class="card-title"><i class="tim-icons icon-square-pin text-info"></i><span id="lat">Cargando...</span></h4>
 
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-2 col-md-4">
-      <div class="card card-chart">
-        <div class="card-header">
-          <h5 class="card-category">Lon</h5>
-          <h4 class="card-title"><i class="tim-icons icon-square-pin text-info"></i><span id="lon">Cargando...</span></h4>
+		</div>
+	  </div>
+	</div>
+	<div class="col-lg-2 col-md-4">
+	  <div class="card card-chart">
+		<div class="card-header">
+		  <h5 class="card-category">Lon</h5>
+		  <h4 class="card-title"><i class="tim-icons icon-square-pin text-info"></i><span id="lon">Cargando...</span></h4>
 
-        </div>
-      </div>
-    </div>
+		</div>
+	  </div>
+	</div>
 
   </div>
   <footer class="footer">
-    <div class="container-fluid">
+	<div class="container-fluid">
 
-      <div class="copyright">
-        ©
+	  <div class="copyright">
+		©
 
 
-        <a href="javascript:void(0)" target="https://agrotrack.uy">AgroTrack</a> for a better ag.
-      </div>
-    </div>
+		<a href="javascript:void(0)" target="https://agrotrack.uy">AgroTrack</a> for a better ag.
+	  </div>
+	</div>
   </footer>
 </div>
 </div>
@@ -241,21 +255,21 @@
  <div class="modal-dialog" role="document">
   <div class="modal-content card">
    <div class="modal-header justify-content-center">
-    <button aria-hidden="true" class="close" data-dismiss="modal" type="button"><i class="tim-icons icon-simple-remove"></i></button>
-    <h6 class="title title-up">Ajustes</h6>
+	<button aria-hidden="true" class="close" data-dismiss="modal" type="button"><i class="tim-icons icon-simple-remove"></i></button>
+	<h6 class="title title-up">Ajustes</h6>
   </div>
   <div class="text-center modal-body">
-    <div class="row"><label class="col-md-3 col-form-label">IP antena:</label> <div class="col-md-9"><div class="form-group"><!----> <div class="mb-0"><!----> <input id="_ip" aria-describedby="addon-right addon-left"  class="form-control"> <!----></div> <!----> </div></div></div>
+	<div class="row"><label class="col-md-3 col-form-label">IP antena:</label> <div class="col-md-9"><div class="form-group"><!----> <div class="mb-0"><!----> <input id="_ip" aria-describedby="addon-right addon-left"  class="form-control"> <!----></div> <!----> </div></div></div>
 
-    <div class="row"><label class="col-md-3 col-form-label">Ancho op:</label> <div class="col-md-9"><div class="form-group"><!----> <div class="mb-0"><!----> <input id="_ancho" aria-describedby="addon-right addon-left"  class="form-control"> <!----></div> <!----> </div></div></div>
+	<div class="row"><label class="col-md-3 col-form-label">Ancho op:</label> <div class="col-md-9"><div class="form-group"><!----> <div class="mb-0"><!----> <input id="_ancho" aria-describedby="addon-right addon-left"  class="form-control"> <!----></div> <!----> </div></div></div>
 
-    <div class="row"><label class="col-md-3 col-form-label">P:</label> <div class="col-md-9"><div class="form-group"><!----> <div class="mb-0"><!----> <input id="_p" aria-describedby="addon-right addon-left"  class="form-control"> <!----></div> <!----> </div></div></div>
+	<div class="row"><label class="col-md-3 col-form-label">P:</label> <div class="col-md-9"><div class="form-group"><!----> <div class="mb-0"><!----> <input id="_p" aria-describedby="addon-right addon-left"  class="form-control"> <!----></div> <!----> </div></div></div>
 
-    <div class="row"><label class="col-md-3 col-form-label">I:</label> <div class="col-md-9"><div class="form-group"><!----> <div class="mb-0"><!----> <input id="_i" aria-describedby="addon-right addon-left"  class="form-control"> <!----></div> <!----> </div></div></div>
+	<div class="row"><label class="col-md-3 col-form-label">I:</label> <div class="col-md-9"><div class="form-group"><!----> <div class="mb-0"><!----> <input id="_i" aria-describedby="addon-right addon-left"  class="form-control"> <!----></div> <!----> </div></div></div>
 
-    <div class="row"><label class="col-md-3 col-form-label">D:</label> <div class="col-md-9"><div class="form-group"><!----> <div class="mb-0"><!----> <input id="_d" aria-describedby="addon-right addon-left"  class="form-control"> <!----></div> <!----> </div></div></div>
+	<div class="row"><label class="col-md-3 col-form-label">D:</label> <div class="col-md-9"><div class="form-group"><!----> <div class="mb-0"><!----> <input id="_d" aria-describedby="addon-right addon-left"  class="form-control"> <!----></div> <!----> </div></div></div>
 
-    <div class="row"><label class="col-md-3 col-form-label">Log(Local):</label> <div class="col-md-9"><div class="form-group"><!----> <div class="mb-0"><!----> <input id="_log" aria-describedby="addon-right addon-left"  class="form-control"><!----></div> <!----> </div></div></div>
+	<div class="row"><label class="col-md-3 col-form-label">Log(Local):</label> <div class="col-md-9"><div class="form-group"><!----> <div class="mb-0"><!----> <input id="_log" aria-describedby="addon-right addon-left"  class="form-control"><!----></div> <!----> </div></div></div>
 
 
   </div>
@@ -283,14 +297,14 @@
   var follow=false;
   var place_marker=false;
   var firebaseConfig = {
-    apiKey: "AIzaSyDsOUb9YhLvi3uWcgzzpszzPlHo0u_ZG4I",
-    authDomain: "agropiloto-2d210.firebaseapp.com",
-    databaseURL: "https://agropiloto-2d210.firebaseio.com",
-    projectId: "agropiloto-2d210",
-    storageBucket: "agropiloto-2d210.appspot.com",
-    messagingSenderId: "221831933775",
-    appId: "1:221831933775:web:3862a904c2a519cf285f3a",
-    measurementId: "G-V9817D2H13"
+	apiKey: "AIzaSyDsOUb9YhLvi3uWcgzzpszzPlHo0u_ZG4I",
+	authDomain: "agropiloto-2d210.firebaseapp.com",
+	databaseURL: "https://agropiloto-2d210.firebaseio.com",
+	projectId: "agropiloto-2d210",
+	storageBucket: "agropiloto-2d210.appspot.com",
+	messagingSenderId: "221831933775",
+	appId: "1:221831933775:web:3862a904c2a519cf285f3a",
+	measurementId: "G-V9817D2H13"
   };
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
@@ -300,40 +314,46 @@
   ///CAMBIOS DE ESTADO
   db.collection("status").doc("data")
   .onSnapshot(function(doc) {
-    var datos=doc.data();
-    if(datos.modo!=$("#modo").html()){
-      $.notify({
-          icon: "tim-icons icon-square-pin",
-          message: "Se ha pasado de "+$("#modo").html()+" al modo "+datos.modo
+	var datos=doc.data();
+	if(datos.modo!=$("#modo").html()){
+	  $.notify({
+		  icon: "tim-icons icon-bulb-63",
+		  message: "Se ha pasado de "+$("#modo").html()+" al modo "+datos.modo
 
-        }, {
-          type: "danger",
-          timer: 3000,
-          placement: {
-            from: "top",
-            align: "right"
-          }
+		}, {
+		  type: "danger",
+		  timer: 3000,
+		  placement: {
+			from: "top",
+			align: "right"
+		  }
 
-       });
-    }
-    $("#modo").html(datos.modo);
-    $("#velocidad").html(datos.spd.toFixed(2)+"km/h");
-    $("#curso").html(datos.nav.toFixed(0)+" grados");
-    $("#sync").html((Date.now()/1000-datos.timestamp.toMillis()/1000).toFixed()+"seg.");
-    $("#lat").html(datos.lat.toFixed(5));
-    $("#lon").html(datos.lon.toFixed(5));
-    updateMap(datos.nav,datos.lat,datos.lon)
-    
+	   });
+	}
+	$("#modo").html(datos.modo);
+	$("#velocidad").html(datos.spd.toFixed(2)+"km/h");
+	$("#curso").html(datos.nav.toFixed(0)+" grados");
+	$("#sync").html((Date.now()/1000-datos.timestamp.toMillis()/1000).toFixed()+"seg.");
+	$("#lat").html(datos.lat.toFixed(5));
+	$("#lon").html(datos.lon.toFixed(5));
+	if(datos.modo=="MANUAL")
+	{
+	  $("#floating-panel").show();
+	} else{
+	  $("#floating-panel").hide();
+	}
+	updateMap(datos.nav,datos.lat,datos.lon)
+	
   });
   db.collection("conf").doc("params")
   .onSnapshot(function(doc) {
-    var datos=doc.data();
-    $("#_ip").val(datos.ip);
-    $("#_ancho").val(datos.ancho);
-    $("#_p").val(datos.p);
-    $("#_i").val(datos.i);
-    $("#_d").val(datos.d);
-    $("#_log").val(localStorage.getItem('_log'));
+	var datos=doc.data();
+	$("#_ip").val(datos.ip);
+	$("#_ancho").val(datos.ancho);
+	$("#_p").val(datos.p);
+	$("#_i").val(datos.i);
+	$("#_d").val(datos.d);
+	$("#_log").val(localStorage.getItem('_log'));
   });
 
 
@@ -346,253 +366,359 @@
 <script src="../assets/js/core/popper.min.js"></script>
 <script src="../assets/js/core/bootstrap.min.js"></script>
 <script src="../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
-<!--  Google Maps Plugin    -->
+<!--  Google Maps Plugin	-->
 <!-- Place this tag in your head or just before your close body tag. -->
 <!-- Chart JS -->
 <script src="../assets/js/plugins/chartjs.min.js"></script>
-<!--  Notifications Plugin    -->
+<!--  Notifications Plugin	-->
 <script src="../assets/js/plugins/bootstrap-notify.js"></script>
 <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="../assets/js/black-dashboard.min.js?v=1.0.0"></script><!-- Black Dashboard DEMO methods, don't include it in your project! -->
 <script src="../assets/demo/demo.js"></script>
 <script>
   $(document).ready(function() {
-    $().ready(function() {
-
-      $('#mostrar_track').click(function(){
-        track=true;
-        poly.setMap(map);
-         $.notify({
-          icon: "tim-icons icon-square-pin",
-          message: "Mostrar track activado!"
-
-        }, {
-          type: "success",
-          timer: 3000,
-          placement: {
-            from: "top",
-            align: "right"
-          }
-
-       });
-       });
-
-     
-
-      $('#ocultar_track').click(function(){
-        track=false;
-        poly.setMap(null);
-         $.notify({
-          icon: "tim-icons icon-square-pin",
-          message: "Mostrar track desactivado!"
-
-        }, {
-          type: "warning",
-          timer:3000,
-          placement: {
-            from: "top",
-            align: "right"
-          }
-      });});
-
-      $('#centrar').click(function(){
-        follow=true;
-        $.notify({
-          icon: "tim-icons icon-square-pin",
-          message: "Centrado activado!"
-
-        }, {
-          type: "success",
-          timer: 5000,
-          placement: {
-            from: "top",
-            align: "right"
-          }
-        });
-      });
-
-      $('#marcar_punto').click(function(){
-        place_marker=true;
-        $.notify({
-          icon: "tim-icons icon-square-pin",
-          message: "Seleccione el destino en el mapa."
-
-        }, {
-          type: "info",
-          timer: 8000,
-          placement: {
-            from: "top",
-            align: "right"
-          }
-        });
-        target.setMap(null);
-      });
-
-      $('#detener').click(function(){
-        db.collection("status").doc("nav").update({'mode': "STOP"});
-        
-         $.notify({
-          icon: "tim-icons icon-square-pin",
-          message: "DETENCION INICIADA!"
-
-        }, {
-          type: "success",
-          timer: 3000,
-          placement: {
-            from: "top",
-            align: "right"
-          }
-
-       });
-         target.setMap(null);
-       });
-      $('#apagar').click(function(){
-        db.collection("status").doc("nav").update({'mode': "APAGAR"})
-         $.notify({
-          icon: "tim-icons icon-square-pin",
-          message: "APAGADO INICIADO!"
-
-        }, {
-          type: "danger",
-          timer: 3000,
-          placement: {
-            from: "top",
-            align: "right"
-          }
-
-       });
-       });
-
-      $('#save_params').click(function(){
-        localStorage.setItem('_log',$("#_log").val());
-        db.collection("conf").doc("params").set({
-          ip: $("#_ip").val(),
-          ancho: $("#_ancho").val(),
-          p: $("#_p").val(),
-          i: $("#_i").val(),
-          d: $("#_d").val(),
-        }).then(function(){
-          $.notify({
-            icon: "tim-icons icon-settings",
-            message: "Ajustes guardados correctamente!"
-
-          }, {
-            type: "success",
-            timer: 8000,
-            placement: {
-              from: "top",
-              align: "right"
-            }
-          });
-        });
-      });
-
-      $sidebar = $('.sidebar');
-      $navbar = $('.navbar');
-      $main_panel = $('.main-panel');
-
-      $full_page = $('.full-page');
-
-      $sidebar_responsive = $('body > .navbar-collapse');
-      sidebar_mini_active = true;
-      white_color = false;
-
-      window_width = $(window).width();
-
-      fixed_plugin_open = $('.sidebar .sidebar-wrapper .nav li.active a p').html();
+	$().ready(function() {
 
 
 
-      $('.fixed-plugin a').click(function(event) {
-        if ($(this).hasClass('switch-trigger')) {
-          if (event.stopPropagation) {
-            event.stopPropagation();
-          } else if (window.event) {
-            window.event.cancelBubble = true;
-          }
-        }
-      });
+$("#preset4").change(function(){
+	
+	var dir=0
+	var newval=parseInt($(this).val())*2500;
+	if(newval<0){
+	  dir=1;
+	  newval=Math.abs(newval)
+	}
+	
+	if(newval!=0)
+	  db.collection("status").doc("nav").update({ 'step': newval.toString(), 'dir': dir.toString()}).then(function(){
+		$("#preset4").val("0");
+	});
+  });
 
-      $('.fixed-plugin .background-color span').click(function() {
-        $(this).siblings().removeClass('active');
-        $(this).addClass('active');
+	  $('#mostrar_track').click(function(){
+    if(!track){
+      $('#mostrar_track').addClass("btn-danger");
+      $('#mostrar_track').removeClass("btn-info");
+      		track=true;
+		poly.setMap(map);
+		 $.notify({
+		  icon: "tim-icons icon-square-pin",
+		  message: "Mostrar track activado!"
 
-        var new_color = $(this).data('color');
+		}, {
+		  type: "success",
+		  timer: 3000,
+		  placement: {
+			from: "top",
+			align: "right"
+		  }
 
-        if ($sidebar.length != 0) {
-          $sidebar.attr('data', new_color);
-        }
+	   });
+    }
+    else{
+      $('#mostrar_track').addClass("btn-info");
+      $('#mostrar_track').removeClass("btn-danger");
+    track=false;
+		poly.setMap(null);
+		 $.notify({
+		  icon: "tim-icons icon-square-pin",
+		  message: "Mostrar track desactivado!"
 
-        if ($main_panel.length != 0) {
-          $main_panel.attr('data', new_color);
-        }
+		}, {
+		  type: "warning",
+		  timer:3000,
+		  placement: {
+			from: "top",
+			align: "right"
+		  }
+	  });
+    }
 
-        if ($full_page.length != 0) {
-          $full_page.attr('filter-color', new_color);
-        }
+	   });
 
-        if ($sidebar_responsive.length != 0) {
-          $sidebar_responsive.attr('data', new_color);
-        }
-      });
-
-      $('.switch-sidebar-mini input').on("switchChange.bootstrapSwitch", function() {
-        var $btn = $(this);
-
-        if (sidebar_mini_active == true) {
-          $('body').removeClass('sidebar-mini');
-          sidebar_mini_active = false;
-          blackDashboard.showSidebarMessage('Sidebar mini deactivated...');
-        } else {
-          $('body').addClass('sidebar-mini');
-          sidebar_mini_active = true;
-          blackDashboard.showSidebarMessage('Sidebar mini activated...');
-        }
-
-          // we simulate the window Resize so the charts will get updated in realtime.
-          var simulateWindowResize = setInterval(function() {
-            window.dispatchEvent(new Event('resize'));
-          }, 180);
-
-          // we stop the simulation of Window Resize after the animations are completed
-          setTimeout(function() {
-            clearInterval(simulateWindowResize);
-          }, 1000);
-        });
-
-      $('.switch-change-color input').on("switchChange.bootstrapSwitch", function() {
-        var $btn = $(this);
-
-        if (white_color == true) {
-
-          $('body').addClass('change-background');
-          setTimeout(function() {
-            $('body').removeClass('change-background');
-            $('body').removeClass('white-content');
-          }, 900);
-          white_color = false;
-        } else {
-
-          $('body').addClass('change-background');
-          setTimeout(function() {
-            $('body').removeClass('change-background');
-            $('body').addClass('white-content');
-          }, 900);
-
-          white_color = true;
-        }
+	 
 
 
-      });
+	  $('#centrar').click(function(){
+		follow=true;
+    $('#centrar').addClass("btn-danger");
+    $('#centrar').removeClass("btn-info");
+		$.notify({
+		  icon: "tim-icons icon-square-pin",
+		  message: "Centrado activado!"
 
-      $('.light-badge').click(function() {
-        $('body').addClass('white-content');
-      });
+		}, {
+		  type: "success",
+		  timer: 5000,
+		  placement: {
+			from: "top",
+			align: "right"
+		  }
+		});
+	  });
 
-      $('.dark-badge').click(function() {
-        $('body').removeClass('white-content');
-      });
-    });
+	  $('#marcar_punto').click(function(){
+		place_marker=true;
+		$.notify({
+		  icon: "tim-icons icon-square-pin",
+		  message: "Seleccione el destino en el mapa."
+
+		}, {
+		  type: "info",
+		  timer: 8000,
+		  placement: {
+			from: "top",
+			align: "right"
+		  }
+		});
+		target.setMap(null);
+	  });
+
+	  $('#detener').click(function(){
+		db.collection("status").doc("nav").update({'mode': "STOP"});
+		
+		 $.notify({
+		  icon: "tim-icons icon-square-pin",
+		  message: "DETENCION INICIADA!"
+
+		}, {
+		  type: "success",
+		  timer: 3000,
+		  placement: {
+			from: "top",
+			align: "right"
+		  }
+
+	   });
+		 target.setMap(null);
+	   });
+	  $('#apagar').click(function(){
+		db.collection("status").doc("nav").update({'mode': "APAGAR"})
+		 $.notify({
+		  icon: "tim-icons icon-settings",
+		  message: "APAGADO INICIADO!"
+		}, {
+		  type: "danger",
+		  timer: 3000,
+		  placement: {
+			from: "top",
+			align: "right"
+		  }
+	   });
+	   });
+
+	   $('#limite').click(function(){
+		db.collection("status").doc("nav").update({'mode': "GRABAR LIMITE"})
+		 $.notify({
+		  icon: "tim-icons icon-square-pin",
+		  message: "Grabar limite iniciado!"
+		}, {
+		  type: "success",
+		  timer: 3000,
+		  placement: {
+			from: "top",
+			align: "right"
+		  }
+	   });
+	   });
+
+	   $('#marcar_a').click(function(){
+		db.collection("status").doc("nav").update({'mode': "GRABAR A"})
+		 $.notify({
+		  icon: "tim-icons icon-square-pin",
+		  message: "MArcar punto A iniciado!"
+		}, {
+		  type: "success",
+		  timer: 3000,
+		  placement: {
+			from: "top",
+			align: "right"
+		  }
+	   });
+	   });
+
+	   $('#marcar_b').click(function(){
+		db.collection("status").doc("nav").update({'mode': "GRABAR B"})
+		 $.notify({
+		  icon: "tim-icons icon-square-pin",
+		  message: "MArcar punto B iniciado!"
+		}, {
+		  type: "success",
+		  timer: 3000,
+		  placement: {
+			from: "top",
+			align: "right"
+		  }
+	   });
+	   });
+
+	   $('#ruta').click(function(){
+		db.collection("status").doc("nav").update({'mode': "CREAR RUTA"})
+		 $.notify({
+		  icon: "tim-icons icon-square-pin",
+		  message: "Crear ruta iniciado!"
+		}, {
+		  type: "info",
+		  timer: 3000,
+		  placement: {
+			from: "top",
+			align: "right"
+		  }
+	   });
+	   });
+
+
+
+	   $('#set_manual').click(function(){
+		db.collection("status").doc("nav").update({'mode': "MANUAL"})
+		 $.notify({
+		  icon: "tim-icons icon-controller",
+		  message: "Iniciando modo manual!"
+
+		}, {
+		  type: "danger",
+		  timer: 5000,
+		  placement: {
+			from: "top",
+			align: "right"
+		  }
+
+	   });
+	   });
+
+	   
+
+	  $('#save_params').click(function(){
+		localStorage.setItem('_log',$("#_log").val());
+		db.collection("conf").doc("params").set({
+		  ip: $("#_ip").val(),
+		  ancho: $("#_ancho").val(),
+		  p: $("#_p").val(),
+		  i: $("#_i").val(),
+		  d: $("#_d").val(),
+		}).then(function(){
+		  $.notify({
+			icon: "tim-icons icon-settings",
+			message: "Ajustes guardados correctamente!"
+
+		  }, {
+			type: "success",
+			timer: 8000,
+			placement: {
+			  from: "top",
+			  align: "right"
+			}
+		  });
+		});
+	  });
+
+	  $sidebar = $('.sidebar');
+	  $navbar = $('.navbar');
+	  $main_panel = $('.main-panel');
+
+	  $full_page = $('.full-page');
+
+	  $sidebar_responsive = $('body > .navbar-collapse');
+	  sidebar_mini_active = true;
+	  white_color = false;
+
+	  window_width = $(window).width();
+
+	  fixed_plugin_open = $('.sidebar .sidebar-wrapper .nav li.active a p').html();
+
+
+
+	  $('.fixed-plugin a').click(function(event) {
+		if ($(this).hasClass('switch-trigger')) {
+		  if (event.stopPropagation) {
+			event.stopPropagation();
+		  } else if (window.event) {
+			window.event.cancelBubble = true;
+		  }
+		}
+	  });
+
+	  $('.fixed-plugin .background-color span').click(function() {
+		$(this).siblings().removeClass('active');
+		$(this).addClass('active');
+
+		var new_color = $(this).data('color');
+
+		if ($sidebar.length != 0) {
+		  $sidebar.attr('data', new_color);
+		}
+
+		if ($main_panel.length != 0) {
+		  $main_panel.attr('data', new_color);
+		}
+
+		if ($full_page.length != 0) {
+		  $full_page.attr('filter-color', new_color);
+		}
+
+		if ($sidebar_responsive.length != 0) {
+		  $sidebar_responsive.attr('data', new_color);
+		}
+	  });
+
+	  $('.switch-sidebar-mini input').on("switchChange.bootstrapSwitch", function() {
+		var $btn = $(this);
+
+		if (sidebar_mini_active == true) {
+		  $('body').removeClass('sidebar-mini');
+		  sidebar_mini_active = false;
+		  blackDashboard.showSidebarMessage('Sidebar mini deactivated...');
+		} else {
+		  $('body').addClass('sidebar-mini');
+		  sidebar_mini_active = true;
+		  blackDashboard.showSidebarMessage('Sidebar mini activated...');
+		}
+
+		  // we simulate the window Resize so the charts will get updated in realtime.
+		  var simulateWindowResize = setInterval(function() {
+			window.dispatchEvent(new Event('resize'));
+		  }, 180);
+
+		  // we stop the simulation of Window Resize after the animations are completed
+		  setTimeout(function() {
+			clearInterval(simulateWindowResize);
+		  }, 1000);
+		});
+
+	  $('.switch-change-color input').on("switchChange.bootstrapSwitch", function() {
+		var $btn = $(this);
+
+		if (white_color == true) {
+
+		  $('body').addClass('change-background');
+		  setTimeout(function() {
+			$('body').removeClass('change-background');
+			$('body').removeClass('white-content');
+		  }, 900);
+		  white_color = false;
+		} else {
+
+		  $('body').addClass('change-background');
+		  setTimeout(function() {
+			$('body').removeClass('change-background');
+			$('body').addClass('white-content');
+		  }, 900);
+
+		  white_color = true;
+		}
+
+
+	  });
+
+	  $('.light-badge').click(function() {
+		$('body').addClass('white-content');
+	  });
+
+	  $('.dark-badge').click(function() {
+		$('body').removeClass('white-content');
+	  });
+	});
 });
 </script>
 
@@ -602,71 +728,71 @@
    var target;
    var poly;
    function updateMap(bearing,lat,lon) {
-    // var bearing = 135;
+	// var bearing = 135;
 
-    var icon = marker.getIcon();
-    icon.rotation = bearing;
-    marker.setIcon(icon);
-    var latlng=new google.maps.LatLng( lat, lon )
-    marker.setPosition(latlng );
-    if (follow)
-    {
-      map.panTo(latlng);
-    }
-    if(track){
-      var path = poly.getPath();
-      path.push(latlng);
-    }
-    
+	var icon = marker.getIcon();
+	icon.rotation = bearing;
+	marker.setIcon(icon);
+	var latlng=new google.maps.LatLng( lat, lon )
+	marker.setPosition(latlng );
+	if (follow)
+	{
+	  map.panTo(latlng);
+	}
+	if(track){
+	  var path = poly.getPath();
+	  path.push(latlng);
+	}
+	
   }
   function initMap() {
-    map = new google.maps.Map(document.getElementById('map'), {
-      center: {lat: -32.397, lng: -58},
-      zoom: 8,
-      mapTypeId: 'satellite'
-    });
-    marker = new google.maps.Marker({
-      position: map.getCenter(),
-      map: map,
-      title: "MY MARKER",
-      icon: {
-        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-        scale: 4,
-        strokeColor: '#0FF',
-        rotation: 0,
+	map = new google.maps.Map(document.getElementById('map'), {
+	  center: {lat: -32.397, lng: -58},
+	  zoom: 8,
+	  mapTypeId: 'satellite'
+	});
+	marker = new google.maps.Marker({
+	  position: map.getCenter(),
+	  map: map,
+	  title: "MY MARKER",
+	  icon: {
+		path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+		scale: 4,
+		strokeColor: '#0FF',
+		rotation: 0,
 
-      }
-    });
-    poly = new google.maps.Polyline({
-          strokeColor: '#FFFF00',
-          strokeOpacity: 1.0,
-          strokeWeight: 3
-        });
-        poly.setMap(map);
+	  }
+	});
+	poly = new google.maps.Polyline({
+		  strokeColor: '#FFFF00',
+		  strokeOpacity: 1.0,
+		  strokeWeight: 3
+		});
+		poly.setMap(map);
 
   map.addListener('click', function(e) {
 
-    if(place_marker)
-    { 
-      place_marker=false;
-      $.notify({
-            icon: "tim-icons icon-settings",
-            message: "Destino marcado correctamente!"
+	if(place_marker)
+	{ 
+	  place_marker=false;
+	  $.notify({
+			icon: "tim-icons icon-settings",
+			message: "Destino marcado correctamente!"
 
-          }, {
-            type: "success",
-            timer: 8000,
-            placement: {
-              from: "top",
-              align: "right"
-            }
-      });
-      target = new google.maps.Marker({
-      position: e.latLng,
-      map: map,
-      });
-      db.collection("status").doc("nav").update({'mode': "TARGET", 'lat': e.latLng.lat(), 'lon': e.latLng.lng()})
-    }
+		  }, {
+			type: "success",
+			timer: 8000,
+			placement: {
+			  from: "top",
+			  align: "right"
+			}
+	  });
+	  target = new google.maps.Marker({
+	  position: e.latLng,
+	  map: map,
+	  });
+	  db.collection("status").doc("nav").update({'mode': "TARGET", 'lat': e.latLng.lat(), 'lon': e.latLng.lng()})
+	}
   });
 
   map.addListener('center_changed', function() {
