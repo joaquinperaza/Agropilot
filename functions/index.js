@@ -14,6 +14,6 @@ const db = admin.firestore();
 
 exports.logger = functions.firestore
 .document('/status/data').onUpdate((change, context) => {
-	const newValue = change.after.data();
-	db.collection('/log').add(newValue);
+    const newValue = change.after.data();
+    db.collection('/log').add(newValue);
 });

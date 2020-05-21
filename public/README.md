@@ -81,12 +81,12 @@ black-dashboard/
 │   │   ├── black-dashboard.min.js
 │   │   ├── core/
 │   │   └── plugins
-│   │  	 ├── bootstrap-notify.js
-│   │  	 ├── chartjs.min.js
-│   │  	 └── perfect-scrollbar.jquery.min.js
+│   │       ├── bootstrap-notify.js
+│   │       ├── chartjs.min.js
+│   │       └── perfect-scrollbar.jquery.min.js
 │   └── scss/
-│  	 ├── black-dashboard/
-│  	 └── black-dashboard.scss
+│       ├── black-dashboard/
+│       └── black-dashboard.scss
 ├── docs
 │   └── documentation.html
 ├── examples
