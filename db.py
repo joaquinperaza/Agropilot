@@ -67,6 +67,19 @@ class DB:
             u'timestamp': firestore.SERVER_TIMESTAMP
         }
         self.status.document("data").update(data)
+
+    def update_child(self):
+        while True:
+            try:
+                self.update()
+                sleep(2)
+            except Exception as e:
+                print("UPLOAD Error",repr(e))
+
+    def run(self):
+        t1 = threading.Thread(target=self.update_child)
+        t1.start()
+
     def oldget_mode(self):
         mode_doc = self.status.document("nav").get().to_dict()
         self.client.set('mode',mode_doc["mode"])
@@ -126,12 +139,4 @@ class DB:
     def clear_mission_wo(self):
         self.mission.document("routes").update({"nav": []})
 
-    def update_child(self):
-        while True:
-            try:
-                self.update()
-                sleep(2)
 
-    def run(self):
-        t1 = threading.Thread(target=self.update_child)
-        t1.start()
