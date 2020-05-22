@@ -85,7 +85,7 @@ class DB:
         self.client.set('mode',mode_doc["mode"])
 
     def get_mode(self):
-        return self.client.get('mode')
+        return self.client.get('mode').decode("utf-8")
     
     def set_mode(self,modo):
         self.status.document("nav").update({"mode":modo})
