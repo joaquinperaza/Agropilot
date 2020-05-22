@@ -45,19 +45,20 @@ class DB:
             valor=float(self.client.get(key))
         except:
             valor=-2
+        return valor
 
     def update(self):
         data={
-            u'lat': float(self.get_key_float('lat')),
-            u'lon': float(self.get_key_float('lon')),
-            u'sat': float(self.get_key_float('sat')),
-            u'age': float(self.get_key_float('age')),
-            u'spd': float(self.get_key_float('spd')),
-            u'nav': float(self.get_key_float('nav')),
-            u'm1_dir': int(self.get_key_float('dir')),
-            u'm1_stp': int(self.get_key_float('step')),
-            u's1_acl': int(self.get_key_float('acel')),
-            u's2_cte': int(self.get_key_float('corte')),
+            u'lat': (self.get_key_float('lat')),
+            u'lon': (self.get_key_float('lon')),
+            u'sat': (self.get_key_float('sat')),
+            u'age': (self.get_key_float('age')),
+            u'spd': (self.get_key_float('spd')),
+            u'nav': (self.get_key_float('nav')),
+            u'm1_dir': (self.get_key_float('dir')),
+            u'm1_stp': (self.get_key_float('step')),
+            u's1_acl': (self.get_key_float('acel')),
+            u's2_cte': (self.get_key_float('corte')),
             u'modo': self.client.get('mode'),
             u'timestamp': firestore.SERVER_TIMESTAMP
         }
