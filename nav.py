@@ -1,12 +1,9 @@
 from coordinates import Coordinate
-from pyproj import Geod, CRS, transform
+import utils
 import coords, utils
 from shapely.geometry import Point, LineString, LinearRing, Polygon
 import numpy as np
 
-g = Geod(ellps='WGS84')
-wgs84=CRS("EPSG:4326") # LatLon with WGS84 datum used by GPS units and Google Earth 
-UTM=CRS("EPSG:32721")
 
 #Reverse
 #90 course sign change
@@ -32,10 +29,10 @@ def create_path(a,b,contour,distancia,reverse=False,dir=0):
         xx,yy=transform(wgs84, UTM, c.y, c.x)
         utm_pos=Coordinate(x=xx,y=yy)
         contorno_points.append(Point(utm_pos.x,utm_pos.y))
-    x,y=transform(wgs84, UTM, a.y, a.x)
-    a_utm=Point(x,y)
-    x,y=transform(wgs84, UTM, coords.b.y, coords.b.x)
-    b_utm=Point(x,y)
+    a2=utils.to_utm(a)
+    a_utm=Point(a2.x,a2.y)
+    b2=utils.to_utm(b)
+    b_utm=Point(b2.x,b2.y)
     a2,b2=utils.extend(a_utm,b_utm)
     ab_course=utils.bearing(a_utm,b_utm)
     AB= LineString([a2,b2])
