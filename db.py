@@ -62,6 +62,7 @@ class DB:
         t1.start()
         def update_modo( doc_snapshot, changes, read_time):
             try:
+                print(doc_snapshot)
                 modo=doc_snapshot["mode"]
                 self.client.set('mode',modo)
             except Exception as e:
