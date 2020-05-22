@@ -61,11 +61,11 @@ class DB:
         t1 = threading.Thread(target=self.update_child)
         t1.start()
         def update_modo( doc_snapshot, changes, read_time):
-        try:
-            modo=doc_snapshot.to_dict()["mode"]
-            self.client.set('mode',modo)
-        except Exception as e:
-            print("Error actualizar modo", repr(e))
+            try:
+                modo=doc_snapshot.to_dict()["mode"]
+                self.client.set('mode',modo)
+            except Exception as e:
+                print("Error actualizar modo", repr(e))
 
         def update_conf( doc_snapshot, changes, read_time):
             try:
