@@ -1,19 +1,23 @@
 from coordinates import Coordinate
 import math
 from shapely.geometry import Point, LineString
-from pyproj import Geod, CRS, transform
+from pyproj import Geod, Proj, transform
+
+>>> # projection 2: UTM zone 15, clrk66 ellipse, NAD27 datum
+>>> p2 = Proj(init='epsg:26715')
 
 
-g = Geod(ellps='WGS84')
-wgs84=CRS("EPSG:4326")
-UTM=CRS("EPSG:32721") # UTM 21S
+
+
 Coordinate.default_order = 'yx'
+UTM = Proj(init='epsg:32721')
+wgs84 = Proj(proj='latlong',datum='WGS84')
 
 def to_utm(c):
-    xx,yy=transform(wgs84, UTM, c.y, c.x)
+    xx,yy=transform(UTM, wgs84, c.x, c.y)
     return Coordinate(xx,yy)
 def to_wgs84(c):
-    xx,yy=transform(UTM, wgs84, c.x, c.y)
+    xx,yy=transform(wgs84, UTM, c.x, c.y)
     return Coordinate(xx,yy)
 
 def degree(x):
