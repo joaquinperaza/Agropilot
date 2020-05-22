@@ -47,6 +47,7 @@ class DB:
             u'modo': self.client.get('mode'),
             u'timestamp': firestore.SERVER_TIMESTAMP
         }
+        print("MODO U", self.client.get('mode'))
         self.status.document("data").update(data)
 
     def update_child(self):
@@ -63,6 +64,7 @@ class DB:
         def update_modo( doc_snapshot, changes, read_time):
             try:
                 modo=doc_snapshot[0].to_dict()["mode"]
+                print(modo)
                 self.client.set('mode',modo)
             except Exception as e:
                 print("Error actualizar modo", repr(e))

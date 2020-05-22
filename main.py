@@ -20,7 +20,7 @@ print("MODO INIT:",mode)
 global limite, target, a, b, route
 limite=[]
 route=[]
-target, a, b = None
+target, a, b = None, None, None
 while True:
     while mode=="STOP":#FRENAR
         print("stopped")
