@@ -44,10 +44,9 @@ class DB:
             u'm1_stp': (self.get_key_float('step')),
             u's1_acl': (self.get_key_float('acel')),
             u's2_cte': (self.get_key_float('corte')),
-            u'modo': self.client.get('mode'),
+            u'modo': str(self.client.get('mode')),
             u'timestamp': firestore.SERVER_TIMESTAMP
         }
-        print("MODO U", self.client.get('mode'))
         self.status.document("data").update(data)
 
     def update_child(self):
