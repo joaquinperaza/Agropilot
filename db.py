@@ -62,15 +62,14 @@ class DB:
         t1.start()
         def update_modo( doc_snapshot, changes, read_time):
             try:
-                print(doc_snapshot)
-                modo=doc_snapshot["mode"]
+                modo=doc_snapshot[0].to_dict()["mode"]
                 self.client.set('mode',modo)
             except Exception as e:
                 print("Error actualizar modo", repr(e))
 
         def update_conf( doc_snapshot, changes, read_time):
             try:
-                params=doc_snapshot
+                params=doc_snapshot[0].to_dict()
                 self.client.set('p', params["p"])
                 self.client.set('i', params["i"])
                 self.client.set('d', params["d"])
