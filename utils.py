@@ -3,9 +3,6 @@ import math
 from shapely.geometry import Point, LineString
 from pyproj import Geod, Proj, transform
 
->>> # projection 2: UTM zone 15, clrk66 ellipse, NAD27 datum
->>> p2 = Proj(init='epsg:26715')
-
 
 
 
