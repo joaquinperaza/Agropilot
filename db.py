@@ -19,8 +19,8 @@ class DB:
         self.conf = self.db.collection(u'conf')
         self.mission = self.db.collection(u'mission')
         self.client = base.Client(('localhost', 11211))
-        self.mode_watch = status.document("nav").on_snapshot(update_modo)
-        self.mode_watch2 = conf.document("params").on_snapshot(update_conf)
+        self.mode_watch = self.status.document("nav").on_snapshot(update_modo)
+        self.mode_watch2 = self.conf.document("params").on_snapshot(update_conf)
     
     @staticmethod
     def update_modo(doc_snapshot, changes, read_time):
