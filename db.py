@@ -44,7 +44,7 @@ class DB:
             u'm1_stp': (self.get_key_float('step')),
             u's1_acl': (self.get_key_float('acel')),
             u's2_cte': (self.get_key_float('corte')),
-            u'modo': str(self.client.get('mode')).decode("utf-8") ,
+            u'modo': self.client.get('mode').decode("utf-8") ,
             u'timestamp': firestore.SERVER_TIMESTAMP
         }
         self.status.document("data").update(data)

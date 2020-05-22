@@ -296,6 +296,7 @@
   var track=false;
   var follow=false;
   var place_marker=false;
+  var last=0;
   var firebaseConfig = {
     apiKey: "AIzaSyDsOUb9YhLvi3uWcgzzpszzPlHo0u_ZG4I",
     authDomain: "agropiloto-2d210.firebaseapp.com",
@@ -333,9 +334,9 @@
     $("#modo").html(datos.modo);
     $("#velocidad").html(datos.spd.toFixed(2)+"km/h");
     $("#curso").html(datos.nav.toFixed(0)+" grados");
-    $("#sync").html((Date.now()/1000-datos.timestamp.toMillis()/1000).toFixed()+"seg.");
     $("#lat").html(datos.lat.toFixed(5));
     $("#lon").html(datos.lon.toFixed(5));
+	last=datos.timestamp.toMillis();
     if(datos.modo=="MANUAL")
     {
       $("#floating-panel").show();
@@ -358,7 +359,9 @@
 
 
   
-
+setInterval(function(){
+	$("#sync").html((Date.now()/1000-last/1000).toFixed()+"seg.");
+},1000);
 
 </script>
 
