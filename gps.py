@@ -71,7 +71,7 @@ class GPSData:
                         self.client.set('nav', str(data.true_course))
                         self.last=tstamp
             except Exception as e:
-                print("GPS error", repr(e))
+                s=("GPS error", repr(e))
     def pos(self):
         return Coordinate( self.lat , self.lon )
     def run(self):
