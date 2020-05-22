@@ -19,8 +19,7 @@ class DB:
         self.conf = self.db.collection(u'conf')
         self.mission = self.db.collection(u'mission')
         self.client = base.Client(('localhost', 11211))
-        self.mode_watch = self.status.document("nav").on_snapshot(update_modo)
-        self.mode_watch2 = self.conf.document("params").on_snapshot(update_conf)
+        
     
     def update_modo(self, doc_snapshot, changes, read_time):
         try:
@@ -75,6 +74,8 @@ class DB:
     def run(self):
         t1 = threading.Thread(target=self.update_child)
         t1.start()
+        self.mode_watch = self.status.document("nav").on_snapshot(self.update_modo)
+        self.mode_watch2 = self.conf.document("params").on_snapshot(self.update_conf)
 
     def oldget_mode(self):
         mode_doc = self.status.document("nav").get().to_dict()
