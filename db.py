@@ -21,22 +21,7 @@ class DB:
         self.client = base.Client(('localhost', 11211))
         
     
-    def update_modo(self, doc_snapshot, changes, read_time):
-        try:
-            modo=doc_snapshot.to_dict()["mode"]
-            self.client.set('mode',modo)
-        except Exception as e:
-            print("Error actualizar modo", repr(e))
-
-    def update_conf(self, doc_snapshot, changes, read_time):
-        try:
-            params=doc_snapshot.to_dict()
-            self.client.set('p', params["p"])
-            self.client.set('i', params["i"])
-            self.client.set('d', params["d"])
-            self.client.set('ancho',params["ancho"])
-        except Exception as e:
-            print("Error actualizar conf", repr(e))
+    
 
 
     def get_key_float(self,key):
@@ -75,8 +60,24 @@ class DB:
     def run(self):
         t1 = threading.Thread(target=self.update_child)
         t1.start()
-        self.mode_watch = self.status.document("nav").on_snapshot(self.update_modo)
-        self.mode_watch2 = self.conf.document("params").on_snapshot(self.update_conf)
+        def update_modo( doc_snapshot, changes, read_time):
+        try:
+            modo=doc_snapshot.to_dict()["mode"]
+            self.client.set('mode',modo)
+        except Exception as e:
+            print("Error actualizar modo", repr(e))
+
+        def update_conf( doc_snapshot, changes, read_time):
+            try:
+                params=doc_snapshot.to_dict()
+                self.client.set('p', params["p"])
+                self.client.set('i', params["i"])
+                self.client.set('d', params["d"])
+                self.client.set('ancho',params["ancho"])
+            except Exception as e:
+                print("Error actualizar conf", repr(e))
+        self.mode_watch = self.status.document("nav").on_snapshot(update_modo)
+        self.mode_watch2 = self.conf.document("params").on_snapshot(update_conf)
 
     def oldget_mode(self):
         mode_doc = self.status.document("nav").get().to_dict()
