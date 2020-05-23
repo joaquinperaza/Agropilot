@@ -32,14 +32,15 @@ class ActuadoresAgropilot:
         self.client.add('corte', "-1")
         self.client.add('step',"-1")
         self.client.add('dir', "-1")
+        GPIO.setup(self.STEP, GPIO.OUT)
+        GPIO.setup(self.DIR, GPIO.OUT)
         sleep(1)
         t1 = threading.Thread(target=self.runner_child)
         t1.start()
         sleep(1)
         t2 = threading.Thread(target=self.runner_child2)
         t2.start()
-        GPIO.setup(self.STEP, GPIO.OUT)
-        GPIO.setup(self.DIR, GPIO.OUT)
+        
 
     def setAcelerador(self,direction):
         duty = self.a / 180.0 * float(direction) + self.b
@@ -86,6 +87,7 @@ class ActuadoresAgropilot:
                         sleep(delay2/10000000)
                     self.client.set('dir',"0")
                     self.client.set('step',"0")
+                    print ("GIRO END",int(self.client.get('dir')),int(self.client.get('step')))
             except Exception as e:
                 print ("Error en Motor",repr(e))
 
