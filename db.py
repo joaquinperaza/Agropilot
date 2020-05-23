@@ -29,7 +29,7 @@ class DB:
         try:
             valor=float(self.client.get(key))
         except Exception as e:
-        	valor=-2
+            valor=-2
             print('KeyErr',key, repr(e))
         return valor
 
