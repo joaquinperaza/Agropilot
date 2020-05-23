@@ -81,7 +81,7 @@ while True:
 		mode=gps.net.get_mode()
 	except Exception as e:
 		print("MASTER ERR", repr(e))
-		traceback.print_stack()
+		traceback.print_exc()
 
 
 
