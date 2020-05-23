@@ -4,6 +4,7 @@ import time, threading
 from vpython import vec
 from random import randrange
 from simple_pid import PID
+from pymemcache.client import base
 
 class Tractor:
     def __init__(self):
