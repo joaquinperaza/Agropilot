@@ -7,13 +7,13 @@ import threading
 class ActuadoresAgropilot:
     def __init__(self):
         self.client = base.Client(('localhost', 11211))
-        self.acelerador = 22
-        self.kill = 23
+        self.acelerador = 33
+        self.kill = 31
         self.fPWM = 50  # Hz (not higher with software PWM)
         self.a = 10.0
         self.b = 2.0
-        self.DIR = 18  # Direction GPIO Pin
-        self.STEP = 36  # Step GPIO Pin
+        self.DIR = 35  # Direction GPIO Pin
+        self.STEP = 37  # Step GPIO Pin
         self.CW = 1     # Clockwise Rotation
         self.CCW = 0    # Counterclockwise Rotation
         self.SPR = 1600
