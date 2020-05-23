@@ -6,6 +6,7 @@ import utils
 import navigator
 import nav as nav_utils
 global mode
+import traceback
 
 
 control=ActuadoresAgropilot()
