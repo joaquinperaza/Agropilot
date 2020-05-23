@@ -28,7 +28,8 @@ class DB:
         valor=None
         try:
             valor=float(self.client.get(key))
-        except:
+        except Exception as e:
+        	print('INTERNAL PARSE ERR', repr(e))
             valor=-2
         return valor
 
