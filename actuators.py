@@ -35,8 +35,6 @@ class ActuadoresAgropilot:
         GPIO.setup(self.STEP, GPIO.OUT)
         GPIO.setup(self.DIR, GPIO.OUT)
         sleep(1)
-        t1 = threading.Thread(target=self.runner_child)
-        t1.start()
         sleep(1)
         t2 = threading.Thread(target=self.runner_child2)
         t2.start()
