@@ -8,14 +8,30 @@ from pyproj import Geod, Proj, transform
 
 Coordinate.default_order = 'yx'
 UTM = Proj(init='epsg:32721')
-wgs84 = Proj(proj='latlong',datum='WGS84')
+wgs84 = Proj(init="epsg:4326")
 
 def to_utm(c):
-    xx,yy=transform(UTM, wgs84, c.x, c.y)
-    return Coordinate(xx,yy)
+    xx,yy=UTM(c.x, c.y)
+    return Coordinate(x=xx,y=yy)
 def to_wgs84(c):
-    xx,yy=transform(wgs84, UTM, c.x, c.y)
+    xx,yy=transform(wgs84, UTM, c.y, c.x)
     return Coordinate(xx,yy)
+
+
+def get_diff(init, final):
+    if init > 360 or init < 0 or final > 360 or final < 0:
+        raise Exception("out of range")
+    diff = final - init
+    absDiff = abs(diff)
+    if absDiff == 180:
+        return absDiff
+    elif absDiff < 180:
+        return diff
+    elif final > init:
+        return absDiff - 360
+    else:
+        return 360 - absDiff
+
 
 def degree(x):
     pi=math.pi

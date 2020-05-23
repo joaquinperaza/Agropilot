@@ -17,7 +17,7 @@ class ActuadoresAgropilot:
         self.CW = 1     # Clockwise Rotation
         self.CCW = 0    # Counterclockwise Rotation
         self.SPR = 1600
-        self.delay = 50
+        self.delay = 60
         self.idelay = 500
 
     def setup(self):
@@ -57,6 +57,9 @@ class ActuadoresAgropilot:
         self.client.set('step',str(step))
         self.client.set('dir',str(direccion))
         print("GIRO CREADO")
+
+    def stop(self):
+        GPIO.cleanup()
 
     def runner_child(self):
         while True:

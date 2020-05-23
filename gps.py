@@ -6,9 +6,10 @@ from pymemcache.client import base
 import socket
 from db import DB
 import time
+import utils
 from coordinates import Coordinate
 from datetime import date, datetime, timedelta
-
+from shapely.geometry import Point
 Coordinate.default_order = 'yx'
 
 class TCPConnection:
@@ -41,7 +42,7 @@ class GPSData:
         self.lat=0
         self.lon=0
         self.rad=0
-        self.last=datetime.now()
+        self.last=datetime.now().timestamp()
         self.listen.connect(self.net.get_ip(),8888)
         self.t1=None
     def runner_child(self):
@@ -61,19 +62,21 @@ class GPSData:
                     if (line.startswith("$GNRMC")):
                         data = pynmea2.parse(line)
                         self.spd=data.spd_over_grnd*0.5144
-                        tstamp=datetime.combine(data.datestamp, data.timestamp)
-                        if(self.last!=tstamp):
-                            self.rad=((data.true_Course-self.nav)*math.pi/180)/(tstamp)
-                        self.nav=data.true_course
+                        tstamp=datetime.combine(data.datestamp, data.timestamp).timestamp()
+                        true_course=data.true_course or 0
+                        self.nav=true_course
                         self.lat=data.latitude
                         self.lon=data.longitude
                         self.client.set('spd', str(data.spd_over_grnd*0.5144))
-                        self.client.set('nav', str(data.true_course))
+                        self.client.set('nav', str(true_course))
                         self.last=tstamp
             except Exception as e:
-                s=("GPS error", repr(e))
+                print("GPS error", repr(e))
     def pos(self):
         return Coordinate( self.lat , self.lon )
+    def point(self):
+        p=utils.to_utm(self.pos())
+        return Point(p.x,p.y)
     def run(self):
         self.t1 = threading.Thread(target=self.runner_child)
         self.t1.start()

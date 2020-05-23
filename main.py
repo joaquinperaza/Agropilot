@@ -1,8 +1,10 @@
+
+
 from actuators import ActuadoresAgropilot
 from gps import GPSData
 from db import DB
 from time import sleep
-import utils
+import utils, sys
 import navigator
 import nav as nav_utils
 global mode
@@ -43,13 +45,13 @@ while True:
 			while mode=="TARGET":
 				bearing=gps.nav
 				target_course=utils.bearing(utils.to_utm(gps.pos()),target)
-				dif=bearing-target
-				r=gps.spd/gps.rad
-				angulo=(1/r)*200
-				print("angulo:",angulo)
-				print("dif:",dif)
-				control.crear_giro(tractor.doblar(dif,angulo))
+				dif=utils.get_diff(bearing,target_course)
+				print("bearing",bearing,"target",target_course,"dif",dif)
+				calc=tractor.doblar(dif,0)
+				print(calc)
+				control.crear_giro(int(calc[0]),calc[1])
 				mode=gps.net.get_mode()
+				sleep(.2)
 		if mode=="GRABAR LIMITE":
 			limite=[]
 			gps.net.clear_mission()
@@ -72,13 +74,29 @@ while True:
 		if mode=="CREAR RUTA":
 			sleep(1)
 			mode=gps.net.set_mode("STOP")
-			gps.net.clear_mission()
 			route=nav_utils.create_path(a, b, limite,gps.net.get_ancho(),reverse=True,dir=0)
 			gps.net.set_wp(route)
 			mode=gps.net.get_mode()
 			sleep(1)
+		if mode=="AUTO":
+			tractor=navigator.Tractor()
+			while mode=="AUTO":
+				target=nav_utils.get_target(gps.point(),route)
+				bearing=gps.nav
+				target_course=utils.bearing(utils.to_utm(gps.pos()),target)
+				dif=utils.get_diff(bearing,target_course)
+				print("bearing",bearing,"target",target_course,"dif",dif)
+				calc=tractor.doblar(dif,0)
+				print(calc)
+				control.crear_giro(int(calc[0]),calc[1])
+				mode=gps.net.get_mode()
+				sleep(.2)
 		sleep(1)
 		mode=gps.net.get_mode()
+	except KeyboardInterrupt:
+		control.stop()
+		sleep(5)
+		sys.exit()
 	except Exception as e:
 		print("MASTER ERR", repr(e))
 		traceback.print_exc()
