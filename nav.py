@@ -26,9 +26,9 @@ def create_path(a,b,contour,distancia,reverse=False,dir=0):
     path=[]
     contorno_points=[]
     for c in contour:
-        xx,yy=transform(wgs84, UTM, c.y, c.x)
-        utm_pos=Coordinate(x=xx,y=yy)
-        contorno_points.append(Point(utm_pos.x,utm_pos.y))
+        xx,yy=utils.to_utm( c)
+        utm_pos=Point(xx,yy)
+        contorno_points.append(utm_pos)
     a2=utils.to_utm(a)
     a_utm=Point(a2.x,a2.y)
     b2=utils.to_utm(b)

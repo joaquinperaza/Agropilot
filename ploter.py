@@ -77,19 +77,23 @@ def move(LatLon):
 
 
 coords2=coords.coords()
+puntoA=coords.N
+puntoB=coords.W
 for c in coords2:
     xx,yy=transform(wgs84, UTM, c.y, c.x)
     limit_line.append(vec(xx,.5,yy))
-xx,yy=transform(wgs84, UTM, coords.a.y, coords.a.x)
+xx,yy=transform(wgs84, UTM, puntoA.y, puntoA.x)
+puntoA_UTM=Coordinate(x=xx,y=yy)
 qtemp=box( color=color.red, size=vec(10,10,10), pos=vec(xx,.5,yy) ) 
-xx,yy=transform(wgs84, UTM, coords.b.y, coords.b.x)
+xx,yy=transform(wgs84, UTM, puntoB.y, puntoB.x)
+puntoB_UTM=Coordinate(x=xx,y=yy)
 qtemp=box( color=color.red, size=vec(10,10,10), pos=vec(xx,.5,yy) ) 
-path = nav.create_path(coords.a, coords.b, coords2,19,reverse=True,dir=0)
+path = nav.create_path(puntoA, puntoB, coords2,19,reverse=True,dir=0)
 for c in path:
     ab.append(vec(c.x,.5,c.y))
 
 tractor.location=path[0]
-
+print("AB COURSE", utils.bearing(puntoA_UTM,puntoB_UTM))
 def b_action(b):
     global left, right, qtemp, qobj
     qtemp.visible=False
@@ -143,13 +147,13 @@ while True:
             del obj
         qobj=[]
     move(tractor.location)
-    print(tractor.location," Bearing:",tractor.bearing)
+    #print(tractor.location," Bearing:",tractor.bearing)
     d=(Point(tractor.location.x,tractor.location.y))
     point,dist,wp_bearing=nav.get_target(d,path)
     direct_bearing=utils.bearing(d,point)
     target=nav.get_target_course(direct_bearing, wp_bearing, dist, 10)
     tractor.doblar((direct_bearing-tractor.bearing)+desv)
-    print("Dist: ","{0:0.2f}".format(dist),"m. WP_course: ","{0:0.2f}".format(wp_bearing),"deg. Direct_course: ","{0:0.2f}".format(direct_bearing),"deg. Target: ","{0:0.2f}".format(target),"deg.")
+    #print("Dist: ","{0:0.2f}".format(dist),"m. WP_course: ","{0:0.2f}".format(wp_bearing),"deg. Direct_course: ","{0:0.2f}".format(direct_bearing),"deg. Target: ","{0:0.2f}".format(target),"deg.")
     #print("{0:0.2f}".format(c.x),";","{0:0.2f}".format(c.y))
     camera=utils.offset(tractor.location,tractor.bearing,-150)
     x,z=utils.vector(tractor.bearing)

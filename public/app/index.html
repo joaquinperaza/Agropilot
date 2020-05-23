@@ -68,7 +68,7 @@
             <a>
              <button class="btn btn-sm btn-successs btn-block" id="set_manual">MANUAL</button>
        
-            <button class="btn btn-sm btn-success btn-block" onclick="demo.showNotification('top','left')">AUTO</button>
+            <button class="btn btn-sm btn-success btn-block" id="auto">AUTO</button>
        
            <button class="btn btn-sm btn-warning btn-block" id="detener">DETENER</button>
            <button class="btn btn-sm btn-danger btn-block" id="apagar">APAGAR</button>
@@ -332,7 +332,7 @@
        });
     }
     $("#modo").html(datos.modo);
-    $("#velocidad").html(datos.spd.toFixed(2)+"km/h");
+    $("#velocidad").html(datos.spd.toFixed(2)+"m/s");
     $("#curso").html(datos.nav.toFixed(0)+" grados");
     $("#lat").html(datos.lat.toFixed(5));
     $("#lon").html(datos.lon.toFixed(5));
@@ -570,6 +570,21 @@ $("#preset4").change(function(){
           }
        });
        });
+       $('#auto').click(function(){
+        db.collection("status").doc("nav").update({'mode': "AUTO"})
+         $.notify({
+          icon: "tim-icons icon-square-pin",
+          message: "Modo automatico iniciado!"
+        }, {
+          type: "danger",
+          timer: 3000,
+          placement: {
+            from: "top",
+            align: "right"
+          }
+       });
+       });
+
 
 
 
