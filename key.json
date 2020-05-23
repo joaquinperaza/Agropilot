@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "agropiloto-2d210",
+  "private_key_id": "bfc916a00683b1cde4447787632b80aaaf08f16b",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCstkDJoJXdeqOL\noh9e1bz3VXuhHyMefydCvlybMIy2+XgH+kCnvt9np3TPT8KEFZhSpjeW4IiPUvTy\n9WgbIc0hRYduaKYyBoGMKjCvTmbUj+9HhHUacmhXAGmqEUisxBX7zYHmoddTlfvH\nvU5DVdyldhW51u1c6Lqm0VcO/McmfPHF5ZmjUQdnw+C5Jxx03nk626LJOnItF1/3\nNrx9bbIfaoxMbGiF6CQROkt67Wi98tiW1naYBvIPBgNWJwzdtzjwSo5VwiElQ1wx\n4c7iEy6bznyK4vEI9XrHxOq8fZRd+Ae01ryRBRP/opkPsVtOc8MSkbdruFk9MJLZ\nU9u4XA5xAgMBAAECggEAEj/PDbRS/DbirrTqj/3mpyhtqpiHK0hFO5IGEqcpHzEH\nTqnR3h0BhHWBwWFh93dEA+uom7Ui8337quu6XITlpLqGNROICBN+6cgQIoiWvfwY\nIkbr4Wetqw+8mn8+s3P5XK9ve+allsvrcZoI+dLJ6zkp0jFUcwjrprJ0+qeZWsa+\nsVsnyXsHb96rRaomibJ+CUPYu9cNGGFphuaBonVaDjqPXfbVjrFPFi6EsahkTYY9\n4Fad1QEEDKc/ENTOWRcO+I/xmzsplji/SprRLv5c/G0bf0he8C1lbDryjeYXs9nY\nsQpZGRawp8Ykow6HCSnUY/g13GCoJ7oj3X+zGfKBZwKBgQDmq6er9XjmiFBSkQCs\n5BZV26q+wuHr113F0EPkzMexL1hzBcOaen2vYudh4g8KGvRTHuZccsWKqVI+kUdy\ntiOy3Q8fZPxr1Pvvb0vP1WI/WhKE7yQPsmhg3HjwryyWoWUQ+P4X4oYTHl01+tl2\nrD7vlTRMtctfGXyXZ1pqnapc2wKBgQC/rVUbxg2TT/E69Ao1h+I0X7s5/Ob0PP/A\nzBXQN7HLyvAVknY5okuD5mOEEbo8CZFLtWXrl3mYCQetxZY1BODzqEX+cgQmAPNx\nyYBMKQtPjg7nCcycquHY/FHCCcrzy1EF3s+M07gDEyL0SsSawFpXRV9ev4Sxt2yM\nuD+4oGR9owKBgCakjRNWrSlZnrMmTYmpMECz6xfICBb9Xl08NZOH5tA9EUE7rvgb\nGyEdnYudVk2oFFQ0cfz80TEYiommxuRltPdK5zSoM01RQd9rsrSfl7TrPvz8Hvtu\nNOQ9KxmPDxYw9YBxZgfUUAe154Gag4HI+0YhpcBQGEDXQTMQAmqn/RlPAoGBAIcB\n/q12Xb+CEma017AGywSa3VQl10L26CmTVlX3tKrXgS2goNdNgiUglL3Egsmg749E\n8Mn1Qncc/SSfxIIJsqzMvKhRBK0EBHUEOfLrAgWCCOshEtbS4gslBi1HGoWHksUw\nwD3wLm8z/m3VcA+UJs3LljY1bbCDgtjHOlK/3qhDAoGAN3PDwZMHdJPJDfVBEkhq\nyrK4YhbWGUQ2dAATVRhARUxlN4bk3ev1jEKzcWcl1lOa9pQj1COJOUXkMVICvuwl\npDterFzy5YvTysn47+QplCR39ja+5BBw8DbJybFjs5aA+H62Zr8ysRPrziEAyhYW\nz5g1t6N8/LwAbzEEzzQ599k=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-re7gr@agropiloto-2d210.iam.gserviceaccount.com",
+  "client_id": "110802137978468475198",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-re7gr%40agropiloto-2d210.iam.gserviceaccount.com"
+}
+

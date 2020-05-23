@@ -94,8 +94,7 @@ def get_target(gps, path):
     nearest_B=p_min
     if path.index(p_min)<len(path)-1:
         nearest_B=path[path.index(p_min)+1]
-    curso=utils.bearing(nearest_A,nearest_B)
-    return nearest_B, d, curso
+    return nearest_B, d
 
 def get_target_course(b_to_target, target_bearing, d, max_d):
     p = d / max_d
