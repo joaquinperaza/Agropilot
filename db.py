@@ -29,7 +29,7 @@ class DB:
         try:
             valor=float(self.client.get(key))
         except Exception as e:
-        	print('INTERNAL PARSE ERR', repr(e))
+            print('INTERNAL PARSE ERR', repr(e))
             valor=-2
         return valor
 
