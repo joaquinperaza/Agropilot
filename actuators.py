@@ -56,6 +56,7 @@ class ActuadoresAgropilot:
     def crear_giro(self,step,direccion):
         self.client.set('step',str(step))
         self.client.set('dir',str(direccion))
+        "GIRO CREADO
 
     def runner_child(self):
         while True:
