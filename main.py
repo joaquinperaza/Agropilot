@@ -12,7 +12,6 @@ import traceback
 
 
 control=ActuadoresAgropilot()
-control.setup()
 gps=GPSData()
 gps.run()
 gps.net.run()
@@ -100,7 +99,6 @@ while True:
 		sleep(1)
 		mode=gps.net.get_mode()
 	except KeyboardInterrupt:
-		control.stop()
 		sleep(5)
 		sys.exit()
 	except Exception as e:
