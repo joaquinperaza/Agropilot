@@ -122,6 +122,7 @@ class DB:
             coord=utils.to_wgs84(cord)
             nav.append(firestore.GeoPoint(coord.y, coord.x))
         self.mission.document("routes").update({u'nav': nav})
+        self.status.document("nav").update({"mode":"STOP"})
     
     def set_a(self,coord):
         coord2 = firestore.GeoPoint(coord.y, coord.x)

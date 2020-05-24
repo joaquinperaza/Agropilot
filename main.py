@@ -74,7 +74,11 @@ while True:
 		if mode=="CREAR RUTA":
 			sleep(1)
 			mode=gps.net.set_mode("STOP")
-			route=nav_utils.create_path(a, b, limite,gps.net.get_ancho(),reverse=True,dir=0)
+			au=utils.to_utm(a)
+			bu=utils.to_utm(b)
+			curso=utils.bearing(au,bu)
+			dir2= 1 if curso<180 else 0
+			route=nav_utils.create_path(a, b, limite,gps.net.get_ancho(),dir=dir2)
 			gps.net.set_wp(route)
 			mode=gps.net.get_mode()
 			sleep(1)
