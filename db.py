@@ -104,6 +104,16 @@ class DB:
         target=Coordinate( float(mode_doc["lat"]) , float(mode_doc["lon"]) )
         return target
 
+    def load_route(self):
+        mode_doc = self.mission.document("routes").get().to_dict()
+        print("RUTA DE INTERNET")
+        r=[]
+        for point in mode_doc["nav"]:
+            wgs=Coordinate(point.latitude, point.longitude)
+            utm=utils.to_utm(wgs)
+            r.append[utm]
+        return r
+
     def get_ip(self):
         mode_doc = self.conf.document("params").get().to_dict()
         return mode_doc["ip"]

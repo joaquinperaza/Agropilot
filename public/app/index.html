@@ -357,6 +357,28 @@
     $("#_log").val(localStorage.getItem('_log'));
   });
 
+  db.collection("mission").doc("routes")
+  .onSnapshot(function(doc) {
+    var datos=doc.data();
+    console.log(datos.a);
+    p_a.setPosition(new google.maps.LatLng( datos.a.latitude, datos.a.longitude ));
+    p_b.setPosition(new google.maps.LatLng( datos.b.latitude, datos.b.longitude ));
+    limitwp=limit.getPath();
+    routewp=route.getPath();
+    datos.limit.forEach(function(p){
+     p = new google.maps.LatLng( p.latitude, p.longitude )
+     limitwp.push(p)
+    });
+    datos.nav.forEach(function(p){
+     p = new google.maps.LatLng(p.longitude,  p.latitude )
+     routewp.push(p)
+    });
+    p_i.setPosition(new google.maps.LatLng(datos.nav[0].longitude,  datos.nav[0].latitude ))
+
+
+
+  });
+
 
   
 setInterval(function(){
@@ -745,6 +767,11 @@ $("#preset4").change(function(){
    var marker;
    var target;
    var poly;
+   var p_a;
+   var p_b;
+   var p_i;
+   var limit;
+   var route;
    function updateMap(bearing,lat,lon) {
     // var bearing = 135;
 
@@ -781,13 +808,46 @@ $("#preset4").change(function(){
 
       }
     });
+
+    p_a = new google.maps.Marker({
+
+          label: "A",
+          map: map
+        });
+
+          p_b = new google.maps.Marker({
+
+          label: "B",
+          map: map
+        });
+           p_i = new google.maps.Marker({
+
+          label: "INICIO",
+          map: map
+        });
+
     poly = new google.maps.Polyline({
           strokeColor: '#FFFF00',
           strokeOpacity: 1.0,
-          strokeWeight: 3
+          strokeWeight: 2
         });
         poly.setMap(map);
 
+        
+
+  limit = new google.maps.Polyline({
+          strokeColor: '#F00',
+          strokeOpacity: 1.0,
+          strokeWeight: 2
+        });
+   limit.setMap(map);
+
+   route = new google.maps.Polyline({
+          strokeColor: '#FFF',
+          strokeOpacity: 1.0,
+          strokeWeight: 2
+        });
+   route.setMap(map);
   map.addListener('click', function(e) {
 
     if(place_marker)

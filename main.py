@@ -84,6 +84,8 @@ while True:
 			sleep(1)
 		if mode=="AUTO":
 			tractor=navigator.Tractor()
+			if len(route)<2:
+				route=gps.net.load_route()
 			while mode=="AUTO":
 				target,dist=nav_utils.get_target(gps.point(),route)
 				bearing=gps.nav
