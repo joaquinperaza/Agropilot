@@ -14,7 +14,7 @@ def to_utm(c):
     xx,yy=UTM(c.x, c.y)
     return Coordinate(x=xx,y=yy)
 def to_wgs84(c):
-    xx,yy=transform(wgs84, UTM, c.y, c.x)
+    xx,yy=transform(UTM, wgs84, c.x, c.y)
     return Coordinate(xx,yy)
 
 

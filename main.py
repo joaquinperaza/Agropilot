@@ -56,7 +56,7 @@ while True:
 			limite=[]
 			gps.net.clear_mission()
 			while mode=="GRABAR LIMITE":
-				c=gps.get_pos()
+				c=gps.pos()
 				limite.append(c)
 				gps.net.add_limit(c)
 				mode=gps.net.get_mode()
@@ -85,7 +85,7 @@ while True:
 		if mode=="AUTO":
 			tractor=navigator.Tractor()
 			while mode=="AUTO":
-				target=nav_utils.get_target(gps.point(),route)
+				target,dist=nav_utils.get_target(gps.point(),route)
 				bearing=gps.nav
 				target_course=utils.bearing(utils.to_utm(gps.pos()),target)
 				dif=utils.get_diff(bearing,target_course)

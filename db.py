@@ -96,8 +96,9 @@ class DB:
         sleep(1)
 
     def get_ancho(self):
-        return int(self.client.get('mode'))
-    
+        ancho=self.conf.document("params").get().to_dict()["ancho"]
+        return int(ancho)
+
     def get_target(self):
         mode_doc = self.status.document("nav").get().to_dict()
         target=Coordinate( float(mode_doc["lat"]) , float(mode_doc["lon"]) )
