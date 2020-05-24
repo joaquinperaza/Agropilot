@@ -95,8 +95,8 @@ while True:
 				calc=tractor.doblar(dif,0)
 				print(calc)
 				control.crear_giro(int(calc[0]),calc[1])
+				sleep(.5)
 				mode=gps.net.get_mode()
-				sleep(.2)
 		sleep(1)
 		mode=gps.net.get_mode()
 	except KeyboardInterrupt:

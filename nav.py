@@ -76,8 +76,9 @@ def get_target(gps, path):
             p_min=p
     nearest_A=p_min
     nearest_B=p_min
-    if path.index(p_min)<len(path)-1:
-        nearest_B=path[path.index(p_min)+1]
+    print("I:", path.index(p_min))
+    if path.index(p_min)<len(path)-4:
+        nearest_B=path[path.index(p_min)+4]
     return nearest_B, d
 
 def get_target_course(b_to_target, target_bearing, d, max_d):

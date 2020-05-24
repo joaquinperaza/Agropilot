@@ -6,6 +6,7 @@ from pymemcache.client import base
 from coordinates import Coordinate
 from time import sleep
 import utils
+from shapely.geometry import Point
 Coordinate.default_order = 'yx'
 import threading
 
@@ -109,9 +110,10 @@ class DB:
         print("RUTA DE INTERNET")
         r=[]
         for point in mode_doc["nav"]:
-            wgs=Coordinate(point.latitude, point.longitude)
-            utm=utils.to_utm(wgs)
-            r.append[utm]
+            wgsp=Coordinate(point.longitude, point.latitude)
+            utmp=utils.to_utm(wgsp)
+            r.append(Point(utmp.x,utmp.y))
+            print(utmp)
         return r
 
     def get_ip(self):
