@@ -46,7 +46,7 @@ def radians(x):
 def offset(point,angle,d):
     xx = point.x + ( d * math.cos(radians(90-angle)) )
     yy = point.y + ( d * math.sin(radians(90-angle)) )
-    return Coordinate(x=xx, y=yy)
+    return Point(xx, yy)
 
 def vector(angle):
     return  math.cos(radians(90-angle)),  math.sin(radians(90-angle))

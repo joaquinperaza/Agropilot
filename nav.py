@@ -9,50 +9,34 @@ import numpy as np
 #90 course sign change
 #left to right
 # -1 1 change
-def create_path(a,b,contour,distancia,reverse=False,dir=0):
+def create_path(a,b,contour,distancia,dir=0):
     conf_1=-90
-    conf_2=1
+    conf_2=-1
     conf_3="left"
     conf_4=0
     if dir==1:
         conf_3="right"
-    if reverse:
-        conf_1=90
-        conf_2=-1
-        conf_3="right"
-        conf_4=1
-        if dir==1:
-            conf_3="left"
     path=[]
     contorno_points=[]
     for c in contour:
-        xx,yy=utils.to_utm( c)
-        utm_pos=Point(xx,yy)
+        c=utils.to_utm( c)
+        utm_pos=Point(c.x,c.y)
         contorno_points.append(utm_pos)
     a2=utils.to_utm(a)
     a_utm=Point(a2.x,a2.y)
     b2=utils.to_utm(b)
     b_utm=Point(b2.x,b2.y)
-    a2,b2=utils.extend(a_utm,b_utm)
     ab_course=utils.bearing(a_utm,b_utm)
+    a_utm=utils.offset(a2,ab_course-90,distancia*80)
+    b_utm=utils.offset(b2,ab_course-90,distancia*80)
+    a2,b2=utils.extend(a_utm,b_utm)
     AB= LineString([a2,b2])
     contorno=Polygon(contorno_points)
     eroded=contorno.buffer(-distancia, resolution=16, join_style=1)
     line=AB.intersection(eroded)
-    for c in line.coords:
-        path.append(Point(c))
-    centro=utils.offset(utils.toCoord(line.coords[conf_4]),ab_course+conf_1,distancia/2)
-    radius = distancia/2
-    start_angle, end_angle = 90-ab_course+90, 90-ab_course-90 # In degrees
-    numsegments = 200
-    theta = np.radians(np.linspace(start_angle, end_angle, numsegments))
-    x = centro.x + (radius * np.cos(theta))*conf_2*-1
-    y = centro.y + (radius * np.sin(theta))*conf_2*-1
-    arc = LineString(np.column_stack([x, y]))
-    for c in arc.coords:
-            path.append(Point(c))
 
-    for x in range(1, 30):
+
+    for x in range(1, 200):
         ab_1=AB.parallel_offset(x*distancia, conf_3)
         line=ab_1.intersection(eroded)
         if(line.geom_type=="LineString"):
