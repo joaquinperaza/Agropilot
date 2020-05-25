@@ -42,10 +42,6 @@ class DB:
             u'age': (self.get_key_float('age')),
             u'spd': (self.get_key_float('spd')),
             u'nav': (self.get_key_float('nav')),
-            u'm1_dir': (self.get_key_float('dir')),
-            u'm1_stp': (self.get_key_float('step')),
-            u's1_acl': (self.get_key_float('acel')),
-            u's2_cte': (self.get_key_float('corte')),
             u'modo': self.client.get('mode').decode("utf-8") ,
             u'timestamp': firestore.SERVER_TIMESTAMP
         }
@@ -149,7 +145,6 @@ class DB:
         self.client.set('b_lat',str(coord.y))
         self.client.set('b_lon',str(coord.x))
         self.mission.document("routes").update({u'b': coord2})
-        self.status.document("nav").update({"mode":"STOP"})
 
     def clear_mission(self):
         self.mission.document("routes").set({"nav": [], "limit": [],"a": None, "b": None})

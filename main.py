@@ -50,7 +50,7 @@ while True:
 				print(calc)
 				control.crear_giro(int(calc[0]),calc[1])
 				mode=gps.net.get_mode()
-				sleep(.2)
+				sleep(.15)
 		if mode=="GRABAR LIMITE":
 			limite=[]
 			gps.net.clear_mission()
@@ -94,7 +94,6 @@ while True:
 				calc=tractor.doblar(dif,0)
 				print(calc)
 				control.crear_giro(int(calc[0]),calc[1])
-				sleep(.5)
 				mode=gps.net.get_mode()
 		sleep(1)
 		mode=gps.net.get_mode()

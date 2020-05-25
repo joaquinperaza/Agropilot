@@ -4,14 +4,14 @@ import serial
 
 class ActuadoresAgropilot:
     def __init__(self):
-        self.serial = serial.Serial('/dev/ttyACM0', 115200, timeout=1)
+        self.serial = serial.Serial('/dev/ttyUSB0', 115200, timeout=1)
 
 
     def crear_giro(self,step,direccion):
-        self.ser.flush()
+        self.serial.flush()
         stepdir='+'
-        if direccion==1:
+        if int(direccion)==1:
             stepdir='-'
         steps=str(int(step))
-        ser.write(steps+stepdir)
+        self.serial.write((steps+stepdir).encode("ascii"))
         print("GIRO CREADO")
