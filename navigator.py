@@ -10,7 +10,7 @@ class Tractor:
     def __init__(self):
         self.client = base.Client(('localhost', 11211))
         self.pid = PID(float(self.client.get("p")), float(self.client.get("i")), float(self.client.get("d")), setpoint=0)
-        self.pid.output_limits=(-4000, 34000)
+        self.pid.output_limits=(-4000, 4000)
         self.pid.sample_time=1
         self.steps=0
 

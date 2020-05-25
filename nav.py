@@ -1,7 +1,8 @@
 from coordinates import Coordinate
-import utils
+import math
 import coords, utils
 from shapely.geometry import Point, LineString, LinearRing, Polygon
+from shapely.ops import nearest_points
 import numpy as np
 
 
@@ -87,4 +88,12 @@ def get_target_course(b_to_target, target_bearing, d, max_d):
     direct_factor = 0.1 + 0.5 * pow((10 * (p)), 0.25)
     indirect_factor = 1 - direct_factor
     return b_to_target * direct_factor + target_bearing * indirect_factor
+
+def cross_err(position, nav, path):
+   punto=nearest_points(position, path)[1]
+   curso=utils.bearing(position,punto)
+   lado=utils.get_diff(nav,curso)
+   distancia=punto.distance(position)
+   distancia=math.copysign(distancia,lado)
+
 
