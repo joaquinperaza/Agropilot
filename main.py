@@ -86,6 +86,18 @@ while True:
 			if len(route)<2:
 				route=gps.net.load_route()
 			while mode=="AUTO":
+				bearing=gps.nav
+				dif=nav_utils.cross_err(gps.point(),route)
+				calc=tractor.doblar(dif,0)
+				print(calc)
+				control.crear_giro(int(calc[0]),calc[1])
+				mode=gps.net.get_mode()
+				sleep(.2)
+		if mode=="AUTOOLD":
+			tractor=navigator.Tractor()
+			if len(route)<2:
+				route=gps.net.load_route()
+			while mode=="AUTOOLD":
 				target,dist=nav_utils.get_target(gps.point(),route)
 				bearing=gps.nav
 				target_course=utils.bearing(utils.to_utm(gps.pos()),target)
@@ -95,6 +107,11 @@ while True:
 				print(calc)
 				control.crear_giro(int(calc[0]),calc[1])
 				mode=gps.net.get_mode()
+<<<<<<< HEAD
+=======
+				sleep(.2)
+
+>>>>>>> 24d55039c139d8889a9b9d7bdc200fb14f5fb23f
 		sleep(1)
 		mode=gps.net.get_mode()
 	except KeyboardInterrupt:
