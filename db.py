@@ -50,8 +50,8 @@ class DB:
     def update_child(self):
         while True:
             try:
-                self.update()
                 sleep(2)
+                self.update()
             except Exception as e:
                 print("UPLOAD Error",repr(e))
 
@@ -105,12 +105,25 @@ class DB:
         mode_doc = self.mission.document("routes").get().to_dict()
         print("RUTA DE INTERNET")
         r=[]
+        a=Coordinate(mode_doc["a"].latitude, mode_doc["a"].longitude)
+        b=Coordinate(mode_doc["b"].latitude, mode_doc["b"].longitude)
         for point in mode_doc["nav"]:
             wgsp=Coordinate(point.longitude, point.latitude)
             utmp=utils.to_utm(wgsp)
             r.append(Point(utmp.x,utmp.y))
             print(utmp)
-        return r
+        return r,a,b
+    def load_limit(self):
+        mode_doc = self.mission.document("routes").get().to_dict()
+        print("RUTA DE INTERNET")
+        r=[]
+        a=Coordinate(mode_doc["a"].latitude, mode_doc["a"].longitude)
+        b=Coordinate(mode_doc["b"].latitude, mode_doc["b"].longitude)
+        for point in mode_doc["limit"]:
+            wgsp=Coordinate(point.latitude, point.longitude)
+            r.append(wgsp)
+        return r,a,b
+
 
     def get_ip(self):
         mode_doc = self.conf.document("params").get().to_dict()
@@ -129,7 +142,7 @@ class DB:
         nav=[]
         for cord in coords:
             coord=utils.to_wgs84(cord)
-            nav.append(firestore.GeoPoint(coord.y, coord.x))
+            nav.append(firestore.GeoPoint(coord.x, coord.y))
         self.mission.document("routes").update({u'nav': nav})
         self.status.document("nav").update({"mode":"STOP"})
     
@@ -145,6 +158,7 @@ class DB:
         self.client.set('b_lat',str(coord.y))
         self.client.set('b_lon',str(coord.x))
         self.mission.document("routes").update({u'b': coord2})
+        self.status.document("nav").update({"mode":"STOP"})
 
     def clear_mission(self):
         self.mission.document("routes").set({"nav": [], "limit": [],"a": None, "b": None})

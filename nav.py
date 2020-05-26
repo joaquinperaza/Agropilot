@@ -96,5 +96,6 @@ def cross_err(position, nav, path):
    lado=utils.get_diff(nav,curso)
    distancia=punto.distance(position)
    distancia=math.copysign(distancia,lado)
+   return distancia
 
 
