@@ -361,8 +361,7 @@
   .onSnapshot(function(doc) {
     var datos=doc.data();
     console.log(datos.a);
-    p_a.setPosition(new google.maps.LatLng( datos.a.latitude, datos.a.longitude ));
-    p_b.setPosition(new google.maps.LatLng( datos.b.latitude, datos.b.longitude ));
+    
     limitwp=limit.getPath();
     routewp=route.getPath();
     datos.limit.forEach(function(p){
@@ -373,8 +372,10 @@
      p = new google.maps.LatLng(p.longitude,  p.latitude )
      routewp.push(p)
     });
+    
     p_i.setPosition(new google.maps.LatLng(datos.nav[0].longitude,  datos.nav[0].latitude ))
-
+    p_a.setPosition(new google.maps.LatLng( datos.a.latitude, datos.a.longitude ));
+    p_b.setPosition(new google.maps.LatLng( datos.b.latitude, datos.b.longitude ));
 
 
   });
