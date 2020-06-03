@@ -140,7 +140,7 @@ class DB:
             nav.append(firestore.GeoPoint(cord.y, cord.x))
         self.mission.document("routes").update({u'limit': nav})
         self.status.document("nav").update({"mode":"STOP"})
-        self.mission.document("routes").update({u'limit': firestore.ArrayUnion([coord2])})
+
     
     def set_wp(self,coords):
         nav=[]
