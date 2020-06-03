@@ -56,9 +56,9 @@ while True:
 			while mode=="GRABAR LIMITE":
 				c=gps.pos()
 				limite.append(c)
-				gps.net.add_limit(c)
 				mode=gps.net.get_mode()
 				sleep(1)
+			gps.net.set_limit(limite)
 		if mode=="GRABAR A":
 			a=gps.pos()
 			gps.net.set_a(a)

@@ -134,8 +134,12 @@ class DB:
         self.status.document("nav").update({"step": "0", "dir": "0"})
         return mode_doc["step"], mode_doc["dir"]
 
-    def add_limit(self,coord):
-        coord2 = firestore.GeoPoint(coord.y, coord.x)
+    def set_limit(self,coords):
+        nav=[]
+        for cord in coords:
+            nav.append(firestore.GeoPoint(cord.y, cord.x))
+        self.mission.document("routes").update({u'limit': nav})
+        self.status.document("nav").update({"mode":"STOP"})
         self.mission.document("routes").update({u'limit': firestore.ArrayUnion([coord2])})
     
     def set_wp(self,coords):
@@ -158,7 +162,7 @@ class DB:
         self.client.set('b_lat',str(coord.y))
         self.client.set('b_lon',str(coord.x))
         self.mission.document("routes").update({u'b': coord2})
-        self.status.document("nav").update({"mode":"STOP"})
+        self.status.document("nav").update({"mode":"CREAR RUTA"})
 
     def clear_mission(self):
         self.mission.document("routes").set({"nav": [], "limit": [],"a": None, "b": None})
