@@ -369,16 +369,17 @@
      limitwp.push(p)
     });
     datos.nav.forEach(function(p){
-     p = new google.maps.LatLng(p.longitude,  p.latitude )
+     p = new google.maps.LatLng(p.latitude,  p.longitude )
      routewp.push(p)
     });
     
-    p_i.setPosition(new google.maps.LatLng(datos.nav[0].longitude,  datos.nav[0].latitude ))
+    p_i.setPosition(new google.maps.LatLng(datos.nav[0].latitude,  datos.nav[0].longitude ))
     p_a.setPosition(new google.maps.LatLng( datos.a.latitude, datos.a.longitude ));
     p_b.setPosition(new google.maps.LatLng( datos.b.latitude, datos.b.longitude ));
 
 
   });
+
 
 
   
