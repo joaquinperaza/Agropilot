@@ -54,10 +54,13 @@ while True:
 			limite=[]
 			gps.net.clear_mission()
 			while mode=="GRABAR LIMITE":
-				c=gps.pos()
-				limite.append(c)
-				mode=gps.net.get_mode()
-				sleep(1)
+				try:
+					c=gps.pos()
+					limite.append(c)
+					mode=gps.net.get_mode()
+					sleep(1)
+				except Exception as e:
+					print("MASTER ERR", repr(e))
 			gps.net.set_limit(limite)
 		if mode=="GRABAR A":
 			a=gps.pos()

@@ -20,10 +20,6 @@ class DB:
         self.conf = self.db.collection(u'conf')
         self.mission = self.db.collection(u'mission')
         self.client = base.Client(('localhost', 11211))
-        
-    
-    
-
 
     def get_key_float(self,key):
         valor=None
@@ -108,14 +104,14 @@ class DB:
         a=Coordinate(mode_doc["a"].latitude, mode_doc["a"].longitude)
         b=Coordinate(mode_doc["b"].latitude, mode_doc["b"].longitude)
         for point in mode_doc["nav"]:
-            wgsp=Coordinate(point.longitude, point.latitude)
+            wgsp=Coordinate(point.latitude, point.longitude)
             utmp=utils.to_utm(wgsp)
             r.append(Point(utmp.x,utmp.y))
             print(utmp)
         return r,a,b
     def load_limit(self):
         mode_doc = self.mission.document("routes").get().to_dict()
-        print("RUTA DE INTERNET")
+        print("LIMITE DE INTERNET")
         r=[]
         a=Coordinate(mode_doc["a"].latitude, mode_doc["a"].longitude)
         b=Coordinate(mode_doc["b"].latitude, mode_doc["b"].longitude)
