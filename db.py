@@ -146,7 +146,7 @@ class DB:
         nav=[]
         for cord in coords:
             coord=utils.to_wgs84(cord)
-            nav.append(firestore.GeoPoint(coord.x, coord.y))
+            nav.append(firestore.GeoPoint(coord.y, coord.x))
         self.mission.document("routes").update({u'nav': nav})
         self.status.document("nav").update({"mode":"STOP"})
     
