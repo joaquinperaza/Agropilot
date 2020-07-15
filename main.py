@@ -93,6 +93,7 @@ while True:
 				route,a,b=gps.net.load_route()
 			ruta=LineString(route)
 			control.reset()
+			control.centro=gps.net.get_centro()
 			while mode=="AUTO":
 				bearing=gps.nav
 				dif=nav_utils.cross_err(gps.point(),bearing,ruta)
@@ -101,6 +102,10 @@ while True:
 				control.crear_giro(calc)
 				mode=gps.net.get_mode()
 				sleep(.2)
+				try:
+					gps.net.set_actual(control.leer_giro())
+				except:
+					print("Err steer sensr")
 		if mode=="AUTOOLD":
 			tractor=navigator.Tractor()
 			if len(route)<2:

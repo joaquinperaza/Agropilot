@@ -8,7 +8,7 @@ class Tractor:
     def __init__(self):
         self.client = base.Client(('localhost', 11211))
         self.pid = PID(float(self.client.get("p")), float(self.client.get("i")), float(self.client.get("d")), setpoint=0)
-        self.pid.output_limits=(-85, 85)
+        self.pid.output_limits=(-90, 90)
         self.pid.sample_time=.5
         self.steps=0
         self.i=float(self.client.get("i"))
@@ -20,3 +20,4 @@ class Tractor:
             self.pid.Ki=self.i
         direccion=self.pid(delta)
         return int(direccion)
+

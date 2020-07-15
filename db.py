@@ -39,7 +39,8 @@ class DB:
             u'spd': (self.get_key_float('spd')),
             u'nav': (self.get_key_float('nav')),
             u'modo': self.client.get('mode').decode("utf-8") ,
-            u'timestamp': firestore.SERVER_TIMESTAMP
+            u'timestamp': firestore.SERVER_TIMESTAMP,
+            u'actual': int(self.get_key_float('steersensor')),
         }
         self.status.document("data").update(data)
 
@@ -69,6 +70,7 @@ class DB:
                 self.client.set('i', params["i"])
                 self.client.set('d', params["d"])
                 self.client.set('ancho',params["ancho"])
+                self.client.set('centro',params["centro"])
             except Exception as e:
                 print("Error actualizar conf", repr(e))
         self.mode_watch = self.status.document("nav").on_snapshot(update_modo)
@@ -91,6 +93,12 @@ class DB:
     def get_ancho(self):
         ancho=self.conf.document("params").get().to_dict()["ancho"]
         return int(ancho)
+
+    def get_centro(self):
+        return int(self.conf.document("params").get().to_dict()["centro"])
+
+    def set_actual(self,actual):
+       self.client.set('steersensor',str(actual))
 
     def get_target(self):
         mode_doc = self.status.document("nav").get().to_dict()
@@ -125,6 +133,8 @@ class DB:
         mode_doc = self.conf.document("params").get().to_dict()
         return mode_doc["ip"]
 
+    def set_ip(self,ip):
+        self.conf.document("params").update({u'ip': ip})
     def get_test(self):
         mode_doc = self.status.document("nav").get().to_dict()
         self.status.document("nav").update({"step": "0", "dir": "0"})
