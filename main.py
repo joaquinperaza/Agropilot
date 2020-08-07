@@ -122,7 +122,7 @@ while True:
 				mode=gps.net.get_mode(mode)
 				sleep(.2)
 		sleep(1)
-		mode=gps.net.get_mode()
+		mode=gps.net.get_mode(mode)
 	except KeyboardInterrupt:
 		sleep(5)
 		sys.exit()
