@@ -16,7 +16,7 @@ gps.run()
 gps.net.run()
 sleep(1)
 
-mode=gps.net.get_mode()
+mode=gps.net.get_mode("")
 print("MODO INIT:",mode)
 global limite, target, a, b, route
 limite=[]
@@ -27,15 +27,15 @@ while True:
 		while mode=="STOP":#FRENAR
 			print("stopped")
 			sleep(1)
-			mode=gps.net.get_mode()
+			mode=gps.net.get_mode(mode)
 		while mode=="APAGAR":#APAGAR
 			sleep(1)
-			mode=gps.net.get_mode()
+			mode=gps.net.get_mode(mode)
 		while mode=="MANUAL":
 			step,direccion=gps.net.get_test()
 			print("ORDENES DE GIRO:",step,direccion)
 			control.crear_giro(step,direccion)
-			mode=gps.net.get_mode()
+			mode=gps.net.get_mode(mode)
 			sleep(1)
 		if mode=="TARGET":
 			target=utils.to_utm(gps.net.get_target())
@@ -48,7 +48,7 @@ while True:
 				calc=tractor.doblar(dif,0)
 				print(calc)
 				control.crear_giro(calc)
-				mode=gps.net.get_mode()
+				mode=gps.net.get_mode(mode)
 				sleep(.15)
 		if mode=="GRABAR LIMITE":
 			limite=[]
@@ -57,7 +57,7 @@ while True:
 				try:
 					c=gps.pos()
 					limite.append(c)
-					mode=gps.net.get_mode()
+					mode=gps.net.get_mode(mode)
 					sleep(1)
 				except Exception as e:
 					print("MASTER ERR", repr(e))
@@ -65,12 +65,12 @@ while True:
 		if mode=="GRABAR A":
 			a=gps.pos()
 			gps.net.set_a(a)
-			mode=gps.net.get_mode()
+			mode=gps.net.get_mode(mode)
 			sleep(1)
 		if mode=="GRABAR B":
 			b=gps.pos()
 			gps.net.set_b(b)
-			mode=gps.net.get_mode()
+			mode=gps.net.get_mode(mode)
 			sleep(1)
 		if mode=="CREAR RUTA":
 			if len(limite)<2:
@@ -85,7 +85,7 @@ while True:
 			route=nav_utils.create_path(a, b, limite,gps.net.get_ancho(),dir=dir2)
 			print(limite)
 			gps.net.set_wp(route)
-			mode=gps.net.get_mode()
+			mode=gps.net.get_mode(mode)
 			sleep(1)
 		if mode=="AUTO":
 			tractor=navigator.Tractor()
@@ -100,7 +100,7 @@ while True:
 				calc=tractor.doblar(dif)
 				print("CROSSTRACK:",dif,"PID:",calc)
 				control.crear_giro(calc)
-				mode=gps.net.get_mode()
+				mode=gps.net.get_mode(mode)
 				sleep(.2)
 				try:
 					gps.net.set_actual(control.leer_giro())
@@ -119,7 +119,7 @@ while True:
 				calc=tractor.doblar(dif,0)
 				print(calc)
 				control.crear_giro(int(calc[0]),calc[1])
-				mode=gps.net.get_mode()
+				mode=gps.net.get_mode(mode)
 				sleep(.2)
 		sleep(1)
 		mode=gps.net.get_mode()
