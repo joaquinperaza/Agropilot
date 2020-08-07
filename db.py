@@ -80,11 +80,11 @@ class DB:
         mode_doc = self.status.document("nav").get().to_dict()
         self.client.set('mode',mode_doc["mode"])
 
-    def get_mode(self):
+    def get_mode(self, actual):
         try:
             return self.client.get('mode').decode("utf-8")
         except:
-            return "ERROR"
+            return actual
     
     def set_mode(self,modo):
         self.status.document("nav").update({"mode":modo})
