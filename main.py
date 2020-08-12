@@ -28,6 +28,10 @@ while True:
 			print("stopped")
 			sleep(1)
 			mode=gps.net.get_mode()
+			try:
+				gps.net.set_actual(control.leer_giro())
+			except:
+				print("steer err")
 		while mode=="APAGAR":#APAGAR
 			sleep(1)
 			mode=gps.net.get_mode()
@@ -102,10 +106,6 @@ while True:
 				control.crear_giro(calc)
 				mode=gps.net.get_mode()
 				sleep(.2)
-				try:
-					gps.net.set_actual(control.leer_giro())
-				except:
-					print("Err steer sensr")
 		if mode=="AUTOOLD":
 			tractor=navigator.Tractor()
 			if len(route)<2:

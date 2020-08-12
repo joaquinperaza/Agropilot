@@ -86,6 +86,7 @@ class GPSData:
                 lines = self.listen.readlines()
                 for line in lines:
                     if (line.startswith("$GNGGA")):
+                        err=0
                         data = pynmea2.parse(line)
                         self.lat=data.latitude
                         self.lon=data.longitude
@@ -95,6 +96,7 @@ class GPSData:
                         self.client.set('age', str(data.age_gps_data))
 
                     elif (line.startswith("$GNRMC")):
+                        err=0
                         data = pynmea2.parse(line)
                         self.spd=data.spd_over_grnd*0.5144
                         tstamp=datetime.combine(data.datestamp, data.timestamp).timestamp()
