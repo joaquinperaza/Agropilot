@@ -90,7 +90,11 @@ def get_target_course(b_to_target, target_bearing, d, max_d):
     indirect_factor = 1 - direct_factor
     return b_to_target * direct_factor + target_bearing * indirect_factor
 
-def cross_err(position, nav, path):
+def cross_err(pos, nav, path):
+   print(nav)
+   print(pos.x,pos.y)
+   position=utils.offset(pos,nav,4)
+   print(position.x,position.y)
    punto=nearest_points(position, path)[1]
    curso=utils.bearing(position,punto)
    lado=utils.get_diff(nav,curso)
