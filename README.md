@@ -6,3 +6,5 @@ After more than five years building gps guidance systems for tractors we decided
 GPS data is received via NMEA connected to a TCP server in Emlid Reach RTK receiver but can be modified to work via  bluetooth, serial or usb.
 
 Tags: Tractor, autopilot, selfsteering, self-driving, rtk, self-guidance, ag
+
+[![Be-Funky-collage.png](https://i.postimg.cc/NF90H3QJ/Be-Funky-collage.png)](https://postimg.cc/4HGZCF7V)
