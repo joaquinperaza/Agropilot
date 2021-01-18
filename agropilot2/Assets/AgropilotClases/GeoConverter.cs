@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DotNetCoords;
 
-public class Converter
+public class GeoConverter
 {
     private UTMRef zerozone;
     private LatLng zero;
@@ -27,7 +27,7 @@ public class Converter
         return new UTMRef(zerozone.LngZone, zerozone.LatZone, utm.x, utm.y).ToLatLng();
     }
 
-    public Converter(LatLng z) {
+    public GeoConverter(LatLng z) {
         zero = z;
         zerozone = z.ToUtmRef();
     }

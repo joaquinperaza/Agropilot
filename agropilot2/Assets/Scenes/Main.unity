@@ -6410,6 +6410,7 @@ GameObject:
   - component: {fileID: 597063567}
   - component: {fileID: 597063568}
   - component: {fileID: 597063569}
+  - component: {fileID: 597063570}
   m_Layer: 0
   m_Name: Data
   m_TagString: Untagged
@@ -6490,6 +6491,18 @@ MonoBehaviour:
   networkSettings: {fileID: 597063568}
   networkSettings_GPS_IP: {fileID: 1854895459}
   networkSettings_MODULE_IP: {fileID: 674830209}
+--- !u!114 &597063570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 597063564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6554850db1a5e48b5892d14df3a906b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &602449589
 GameObject:
   m_ObjectHideFlags: 0
