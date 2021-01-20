@@ -5857,8 +5857,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 913b86df640c443659835248cef4d9aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  btn: {fileID: 0}
-  cam: {fileID: 0}
+  btn: {fileID: 1587213749}
+  cam: {fileID: 963194229}
 --- !u!114 &567935779
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12862,7 +12862,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1610315634}
-  - component: {fileID: 1610315635}
   m_Layer: 0
   m_Name: tractor
   m_TagString: Untagged
@@ -12886,18 +12885,6 @@ Transform:
   m_Father: {fileID: 271281882}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1610315635
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1610315633}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93a259a015a7b4a1698a564b35651f12, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1617526539
 GameObject:
   m_ObjectHideFlags: 0
