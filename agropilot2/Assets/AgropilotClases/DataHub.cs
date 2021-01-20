@@ -1,43 +1,53 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 using SimpleTCP;
+
+using System.Threading;
+
 public class DataHub : MonoBehaviour
 {
-    private SimpleTcpServer server;
-    [SerializeField] NetworkSettings networkSettings;
-    [SerializeField] TractorSettings tractorSettings;
+    private SimpleTcpClient gpsClient;
+    private AgropilotIO api;
+    private String IPWatchdog;
+
     // Use this for initialization
     void Start()
     {
-        server = new SimpleTcpServer().Start(8921);
-        server.Delimiter = 0x13;
-        server.DelimiterDataReceived += (sender, msg) => {
-
-            if (msg.MessageString == "N")
-            {
-                string json = JsonUtility.ToJson(networkSettings);
-                Debug.Log(json);
-                msg.ReplyLine(json);
-            }
-            if (msg.MessageString == "T")
-            {
-                string json = JsonUtility.ToJson(tractorSettings);
-                msg.ReplyLine(json);
-            }
-            Debug.Log("Recibido: " + msg.MessageString + " connections: " + server.ConnectedClientsCount);
-            msg.ReplyLine("0 200 OK");
-        };
-
-        
+        api = GetComponent<AgropilotIO>();
+        IPWatchdog = null;
+        Connect(); 
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (api.networkSettings.gpsIp!= IPWatchdog) {
+            IPWatchdog = api.networkSettings.gpsIp;
+            Connect();
+        };
+       
+
+    }
+    public void Connect()
+    {
+        try {
+            string[] ip = api.networkSettings.gpsIp.Split(':');
+
+            gpsClient = new SimpleTcpClient().Connect(ip[0], int.Parse(ip[1]));
+            gpsClient.Delimiter = 0x13;
+            gpsClient.DataReceived += (sender, msg) => {
+
+                Debug.Log("GPS NMEA: " + msg.MessageString);
+
+            };
+        }
+        catch (Exception e){ Debug.Log(e); }
+        
 
     }
     void OnApplicationQuit()
     {
-        server.Stop(); 
+        gpsClient.Disconnect();
     }
 }
