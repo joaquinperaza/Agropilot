@@ -26,6 +26,8 @@ public class NetworkSettings : MonoBehaviour
             string path = Application.persistentDataPath + "/" + this.GetType().Name
     + "/";
             JsonUtility.FromJsonOverwrite(File.ReadAllText(path + name + ".json"), this);
+            if (moduleIp == "" || moduleIp == null)
+                moduleIp = "224.5.6.7:1892";
         }
         catch (Exception e)
         {
@@ -37,7 +39,7 @@ public class NetworkSettings : MonoBehaviour
     // Update is called once per frame
     void Save()
     {
-        if (name == "" || name==null)
+        if (name == "" || name == null)
             name = "Default";
         string path = Application.persistentDataPath + "/" + this.GetType().Name
 + "/";
@@ -49,7 +51,7 @@ public class NetworkSettings : MonoBehaviour
         }
         Debug.Log(Application.persistentDataPath);
         string json = JsonUtility.ToJson(this);
-        System.IO.File.WriteAllText(path+name+".json", json);
+        System.IO.File.WriteAllText(path + name + ".json", json);
 
     }
     public void setGpsIP(string s)

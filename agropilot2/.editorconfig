@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# CS3002: El tipo de retorno no es conforme a CLS
+dotnet_diagnostic.CS3002.severity = none

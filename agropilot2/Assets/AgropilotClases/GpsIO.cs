@@ -9,7 +9,7 @@ public class GpsIO : MonoBehaviour
 {
     private SimpleTcpClient gpsClient;
     [SerializeField] private Image gpsLed;
-    private bool gpsLedOn = false;
+    private int gpsLedOn = 2;
     private AgropilotIO api;
     private String IPWatchdog;
     private int gpsExceptionCounter = 1;
@@ -32,7 +32,7 @@ public class GpsIO : MonoBehaviour
 
     // Update is called once per frame
     void gpsLedOff() {
-        gpsLedOn = false;
+        gpsLedOn = 0;
     }
     void Update()
     {
@@ -40,10 +40,14 @@ public class GpsIO : MonoBehaviour
             IPWatchdog = networkSettings.gpsIp;
             Connect();
         };
-        if (gpsLedOn)
+        if (gpsLedOn==1)
+        {
+            gpsLed.color = Color.green;
+            Invoke("gpsLedOff", 0.5f);
+        }
+        else if(gpsLedOn == 2)
         {
             gpsLed.color = Color.red;
-            Invoke("gpsLedOff", 0.5f);
         }
         else
         {
@@ -52,11 +56,10 @@ public class GpsIO : MonoBehaviour
         if ((DateTime.Now - last).TotalSeconds>10) {
             Debug.Log("GPS is offline, reconnecting");
             gpsExceptionCounter++;
-            gpsClient.Disconnect();
-            gpsClient.Dispose();
             last = DateTime.Now;
             Invoke("Connect", 1f * gpsExceptionCounter);
-
+            gpsClient.Disconnect();
+            gpsClient.Dispose();
         }
     }
     public void Connect()
@@ -72,9 +75,10 @@ public class GpsIO : MonoBehaviour
             string[] ip = networkSettings.gpsIp.Split(':');
             gpsClient = new SimpleTcpClient().Connect(ip[0], int.Parse(ip[1]));
             gpsClient.Delimiter = 0x13;
+            gpsLedOn = 0;
             gpsClient.DataReceived += (sender, msg) => {
                 last = DateTime.Now;
-                gpsLedOn = true;
+                gpsLedOn = 1;
                 Debug.Log("GPS NMEA: " + msg.MessageString);
                 gpsExceptionCounter = 0;
                 api.Send(msg.Data);
@@ -83,8 +87,9 @@ public class GpsIO : MonoBehaviour
         }
         catch (Exception e){
             gpsExceptionCounter++;
+            gpsLedOn = 2;
             Debug.Log(e);
-            Invoke("Connect", 1f * gpsExceptionCounter);
+            Invoke("Connect", .5f * gpsExceptionCounter);
             try
             {
                 gpsClient.Disconnect();

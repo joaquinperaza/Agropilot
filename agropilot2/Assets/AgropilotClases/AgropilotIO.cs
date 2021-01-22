@@ -26,8 +26,8 @@ public class AgropilotIO : MonoBehaviour
 
     [SerializeField] private Image rxLed;
     [SerializeField] private Image txLed;
-    private bool txLedOn=false;
-    private bool rxLedOn=false;
+    private int txLedOn=2;
+    private int rxLedOn=2;
     void Start()
     {
         networkSettings = GetComponent<NetworkSettings>();
@@ -61,6 +61,8 @@ public class AgropilotIO : MonoBehaviour
         }
         catch (Exception e)
         {
+            rxLedOn = 2;
+            txLedOn = 1;
             RestartUDP(e);
         }
 
@@ -79,6 +81,8 @@ public class AgropilotIO : MonoBehaviour
             catch (Exception e)
             {
                 run = false;
+                rxLedOn = 2;
+                txLedOn = 1;
                 RestartUDP(e);
             }
             
@@ -94,8 +98,7 @@ public class AgropilotIO : MonoBehaviour
         byte[] receivedBytes = client.EndReceive(result, ref ip);
         if (receivedBytes.Length > 0)
         {
-
-            rxLedOn = true;
+            rxLedOn = 1;
             Debug.Log("RX: " + String.Join(" ", receivedBytes));
             exceptionCounter = 0;
         }
@@ -108,14 +111,12 @@ public class AgropilotIO : MonoBehaviour
             client.Close();
             client.Dispose();
         } 
-        
-
 
     }
 
 
     public void Send(byte[] packet) {
-        txLedOn = true;
+        txLedOn = 1;
         IEnumerable<byte> newBuffer = sendQueue.Concat(packet);
         sendQueue = newBuffer.ToArray();
     }
@@ -125,7 +126,7 @@ public class AgropilotIO : MonoBehaviour
         run = false;
         Debug.Log("Restarting UDP: "+ e);
         exceptionCounter++;
-        Thread.Sleep(500+(1000*exceptionCounter));
+        Thread.Sleep(500+(500*exceptionCounter));
 
         try {
             startUDP();
@@ -143,8 +144,8 @@ public class AgropilotIO : MonoBehaviour
     }
     void LedOff()
     {
-        rxLedOn = false;
-        txLedOn = false;
+        rxLedOn = 0;
+        txLedOn = 0;
     }
     void OnApplicationQuit()
     {
@@ -152,21 +153,29 @@ public class AgropilotIO : MonoBehaviour
     }
     private void Update()
     {
-        if (txLedOn)
+        if (txLedOn==1)
         {
-            txLed.color = Color.red;
+            txLed.color = Color.green;
             Invoke("LedOff", 0.2f);
 
+        }
+        else if (txLedOn == 2)
+        {
+            txLed.color = Color.red;
         }
         else
         {
             txLed.color = Color.gray;
         }
-        if (rxLedOn)
+        if (rxLedOn==1)
         {
-            rxLed.color = Color.red;
+            rxLed.color = Color.green;
             Invoke("LedOff", 0.2f);
 
+        }
+        else if (rxLedOn == 2)
+        {
+            rxLed.color = Color.red;
         }
         else
         {
