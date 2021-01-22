@@ -7,16 +7,24 @@ public class SettingsLoader : MonoBehaviour
 {
     /// <summary>
     /// We need to load settings data to input fields
-    /// so we bing input fields to settings objects attributes
+    /// so we bind input fields to settings objects attributes
     /// </summary>
-    [SerializeField]
     private NetworkSettings networkSettings;
     [SerializeField]
     private InputField networkSettings_GPS_IP;
     [SerializeField]
     private InputField networkSettings_MODULE_IP;
 
+
+    /// <summary>
+    /// Load implements to tractor (and set implement type)
+    /// </summary>
+    private TractorStatus tractor;
+    private TractorSettings tractorSettings;
+    private ImplementSettings implemet;
+
     public void LoadNetwork() {
+        networkSettings = GetComponent<NetworkSettings>();
         networkSettings.Read();
         networkSettings_GPS_IP.text = networkSettings.gpsIp;
         networkSettings_MODULE_IP.text = networkSettings.moduleIp;
@@ -25,6 +33,10 @@ public class SettingsLoader : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        networkSettings = GetComponent<NetworkSettings>();
+        tractorSettings = GetComponent<TractorSettings>();
+        tractor = GetComponent<TractorStatus>();
+        implemet = GetComponent<ImplementSettings>();
         LoadNetwork();
         
     }
