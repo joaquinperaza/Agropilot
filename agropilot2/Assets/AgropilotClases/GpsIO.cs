@@ -17,6 +17,7 @@ public class GpsIO : MonoBehaviour
     public NetworkSettings networkSettings; 
     private TractorSettings tractorSettings;
     private DateTime last;
+    private Thread TCPThread;
     
 
     // Use this for initialization
@@ -27,7 +28,13 @@ public class GpsIO : MonoBehaviour
         networkSettings = GetComponent<NetworkSettings>();
         tractorSettings = GetComponent<TractorSettings>();
         IPWatchdog = null;
-        Connect(); 
+        TCPThread = new Thread(Connect);
+        TCPThread.Priority = System.Threading.ThreadPriority.Lowest;
+        TCPThread.IsBackground = true;
+        Debug.Log("TCP Starting");
+        TCPThread.Start();
+        Debug.Log("TCP Started");
+
     }
 
     // Update is called once per frame
@@ -38,7 +45,13 @@ public class GpsIO : MonoBehaviour
     {
         if (networkSettings.gpsIp!= IPWatchdog) {
             IPWatchdog = networkSettings.gpsIp;
-            Connect();
+            TCPThread.Abort();
+            TCPThread = new Thread(Connect);
+            TCPThread.Priority = System.Threading.ThreadPriority.Lowest;
+            TCPThread.IsBackground = true;
+            Debug.Log("TCP Restarting");
+            TCPThread.Start();
+            Debug.Log("TCP Restarting");
         };
         if (gpsLedOn==1)
         {
@@ -57,9 +70,14 @@ public class GpsIO : MonoBehaviour
             Debug.Log("GPS is offline, reconnecting");
             gpsExceptionCounter++;
             last = DateTime.Now;
-            Invoke("Connect", 1f * gpsExceptionCounter);
-            gpsClient.Disconnect();
-            gpsClient.Dispose();
+
+            TCPThread.Abort();
+            TCPThread = new Thread(Connect);
+            TCPThread.Priority = System.Threading.ThreadPriority.Lowest;
+            TCPThread.IsBackground = true;
+            Debug.Log("TCP Restarting");
+            TCPThread.Start();
+            Debug.Log("TCP Restarting");
         }
     }
     public void Connect()
@@ -86,25 +104,36 @@ public class GpsIO : MonoBehaviour
 
         }
         catch (Exception e){
-            gpsExceptionCounter++;
-            gpsLedOn = 2;
-            Debug.Log(e);
-            Invoke("Connect", .5f * gpsExceptionCounter);
             try
             {
                 gpsClient.Disconnect();
                 gpsClient.Dispose();
             }
             catch { }
-            
-            
-        }
-        
+            gpsExceptionCounter++;
+            gpsLedOn = 2;
+            Debug.Log(e);
+            Thread.Sleep(2000 + (1000 * gpsExceptionCounter));
+            TCPThread = new Thread(Connect);
+            TCPThread.Priority = System.Threading.ThreadPriority.Lowest;
+            TCPThread.IsBackground = true;
+            Debug.Log("TCP Restarting");
+            TCPThread.Start();
+            Debug.Log("TCP Restarting");
 
+            try
+            {
+                gpsClient.Disconnect();
+                gpsClient.Dispose();
+            }
+            catch { }
+        }
     }
     void OnApplicationQuit()
     {
+        TCPThread.Abort();
         gpsClient.Disconnect();
         gpsClient.Dispose();
+
     }
 }

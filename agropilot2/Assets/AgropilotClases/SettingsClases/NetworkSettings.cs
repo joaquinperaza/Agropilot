@@ -3,7 +3,9 @@ using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-
+/// <summary>
+/// TODO: DISPLAY ERRORS!
+/// </summary>
 [System.Serializable]
 public class NetworkSettings : MonoBehaviour
 {
@@ -28,6 +30,8 @@ public class NetworkSettings : MonoBehaviour
             JsonUtility.FromJsonOverwrite(File.ReadAllText(path + name + ".json"), this);
             if (moduleIp == "" || moduleIp == null)
                 moduleIp = "224.5.6.7:1892";
+            if (moduleIp == "" || moduleIp == null)
+                moduleIp = "192.168.1.1:8080";
         }
         catch (Exception e)
         {

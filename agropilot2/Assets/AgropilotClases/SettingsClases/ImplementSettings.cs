@@ -14,7 +14,7 @@ public class ImplementSettings : MonoBehaviour
     ///  1: Rear with axis
     /// </summary>
     public int linkMode=0;
-    public double[] sections;
+    public int[] sections;
     public double toolDistance;
 
     // Start is called before the first frame update
@@ -23,9 +23,10 @@ public class ImplementSettings : MonoBehaviour
 
     }
 
-    public void setSections(double[] s)
+    public void setSections(int[] s)
     {
         sections = s;
+        Save();
     }
 
     // Update is called once per frame

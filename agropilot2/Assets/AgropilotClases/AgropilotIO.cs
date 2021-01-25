@@ -76,7 +76,7 @@ public class AgropilotIO : MonoBehaviour
                     Debug.Log("TX: " + String.Join(" ", sendQueue));
                     sendQueue = new byte[0];
                 }
-                Thread.Sleep(5);
+                Thread.Sleep(50);
             }
             catch (Exception e)
             {
